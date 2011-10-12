@@ -127,6 +127,8 @@ App.router = Ext.Router.draw(function(map)
 		/** URL pattern to match the home controller */
 		map.connect('home', { controller: 'home', action: 'show' });
 
+		map.connect('search', { controller: 'search', action: 'deeplink' });
+
 		/** URL pattern to match the category controller */
 		map.connect('category/:index', { controller: 'category', action: 'show' });
 

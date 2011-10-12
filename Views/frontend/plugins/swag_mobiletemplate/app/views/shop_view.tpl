@@ -21,6 +21,7 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 	title: '{s name="MobileShopTitle"}Shop{/s}',
 	iconCls: 'home',
 	layout: 'card',
+	promotionItems: [],
 	listeners: {
 		scope: this,
 
@@ -41,7 +42,50 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 	},
 
 	initComponent: function () {
-		var items;
+		var items, me = this;
+
+		App.stores.Promotions.load({
+			scope: this,
+			callback: function(records) {
+				Ext.each(records, function(rec) {
+					me.promotionItems.push({
+						html: '<div class="slideArticle" data-articleid="'+rec.get('articleID')+'"><div class="art_thumb" style="background-image: url(' + rec.get('img_url') + ')"></div><div class="name">' + rec.get('name') + '</div><div class="price">' + rec.get('price') + ' &euro;*</div><div class="desc">' + rec.get('desc') + '</div></div>',
+						cls: 'slideArticle'
+					});
+				});
+
+				/** Promotion carousel */
+				me.promotions = new Ext.Carousel({
+					dock: 'top',
+					id: 'promotions',
+					height: '190px',
+					width: '100%',
+					direction: 'horizontal',
+					items: me.promotionItems,
+					monitorOrientation: true,
+					listeners: {
+						scope: this,
+						orientationchange: function(me, orientation, width, height) {
+							me.setWidth(width);
+							me.doLayout();
+						},
+						el: {
+							tap: function(event,el) {
+								el = Ext.get(el);
+								Ext.dispatch({
+									controller: 'detail',
+									action: 'show',
+									articleID: el.getAttribute('data-articleid')
+								});
+							},
+							delegate: '.slideArticle'
+						}
+					}
+				});
+				me.pnl.insert(1, me.promotions);
+				me.pnl.doLayout();
+			}
+		});
 
 		/** Back button */
 		this.backBtn = new Ext.Button({
@@ -54,7 +98,7 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 
 		/** Toolbar */
 		this.toolBar = new Ext.Toolbar({
-			title: 'Master',
+			title: '{$sShopname}',
 			items: [this.backBtn],
 			hidden: true,
 			width: '100%'
@@ -67,36 +111,9 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 			autoHeight: true
 		});
 
-		/** Promotions */
-		this.promotions = new Ext.Carousel({
-			id: 'promotions',
-			store: App.stores.Promotions,
-			height: 150,
-			width: '100%',
-			direction: 'horizontal',
-			listeners: {
-				scope: this,
-				orientationchange: function(me, orientation, width, height) {
-					me.setWidth(width);
-					me.doComponentLayout();
-				},
-				el: {
-					tap: function(event,el) {
-						el = Ext.get(el);
-						Ext.dispatch({
-							controller: 'detail',
-							action: 'show',
-							articleID: el.getAttribute('data-articleid')
-						});
-					},
-					delegate: '.slideArticle'
-				}
-			}
-		});
-
 		/** Main categories */
 		this.list = new Ext.List({
-			id: 'categories',
+			cls: 'main-categories',
 			store: App.stores.Categories,
 			scroll: false,
 			height: '100%',
@@ -109,6 +126,8 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 				itemtap: this.onItemTap
 			}
 		});
+
+		this.topSel
 
 		/** Link to the normal version */
 		this.normalView = new Ext.Panel({
@@ -133,23 +152,8 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 			html: '<div class="priceNotice x-form-fieldset-instructions">{s name="MobileShopPriceNoticeText"}* Alle Preise inkl. gesetzl. Mehrwertsteuer zzgl. Versandkosten und ggf. Nachnahmegebühren, wenn nicht anders beschrieben{/s}</div>'
 		});
 
-		/** Renders the promotion carousel after the store has changes */
-		this.promotions.store.on({
-			scope: this,
-			load: function() { this.promotions.doLayout() }
-		});
-
-		/** Get promotion articles */
-		items = this.getPromotionItems(this.promotions.store);
-		if(items.length) {
-			this.promotions.add(items);
-		} else {
-			this.promotions.hide();
-		}
-
 		this.itms = [
 			this.logo,
-			this.promotions,
 			this.list,
 			this.normalView,
 			this.starNotice
@@ -276,22 +280,6 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
      */
 	onNormalView: function() {
 		window.location.href = App.RequestURL.useNormalSite;
-	},
-
-    /**
-     * Creates the items for the promotions carousel
-     *
-     * @param store
-     */
-	getPromotionItems: function(store) {
-		var items = [];
-		store.each(function(rec) {
-			items.push({
-				html: '<div class="slideArticle" data-articleid="'+rec.get('articleID')+'"><div class="art_thumb" style="background-image: url(' + rec.get('img_url') + ')"></div><div class="name">' + rec.get('name') + '</div><div class="price">' + rec.get('price') + ' &euro;*</div><div class="desc">' + rec.get('desc') + '</div></div>',
-				cls: 'slideArticle'
-			});
-		});
-		return items;
 	}
 });
 

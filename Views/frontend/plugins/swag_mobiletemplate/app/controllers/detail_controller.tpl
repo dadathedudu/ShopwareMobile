@@ -50,6 +50,8 @@ Ext.regController('detail', {
         });
 
 		if(Ext.isDefined(options.parent)) {
+			console.log(options.parent);
+
 			Ext.getCmp('viewport').setActiveItem(0, { type: 'slide', reverse: true });
 			this.shopView.toolBar.show();
 			this.shopView.backBtn.show();
@@ -61,8 +63,8 @@ Ext.regController('detail', {
 			this.shopView.toolBar.show();
 			this.shopView.doComponentLayout();
 		}
+		this.shopView.setActiveItem(this.view, 'slide');
 
-        this.shopView.setActiveItem(this.view, 'slide');
     },
 
 	/**

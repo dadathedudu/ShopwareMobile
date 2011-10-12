@@ -265,6 +265,7 @@
         {include file="frontend/plugins/swag_mobiletemplate/app/controllers/account_controller.tpl"}
         {include file="frontend/plugins/swag_mobiletemplate/app/controllers/checkout_controller.tpl"}
         {include file="frontend/plugins/swag_mobiletemplate/app/controllers/info_controller.tpl"}
+        {include file="frontend/plugins/swag_mobiletemplate/app/controllers/search_controller.tpl"}
 
         {* Views *}
         {include file="frontend/plugins/swag_mobiletemplate/app/views/main_view.tpl"}

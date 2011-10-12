@@ -160,6 +160,7 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 		// Supported paymentmeans
 		$supportedPaymentmeans = explode('|', $this->props['supportedPayments']);
 		$availablePayments = array(3, 4, 5, 20);
+		
 		$payments = array();
 		foreach($paymentmeans as $k => $v) {
 			if(in_array($v['id'], $availablePayments)) {

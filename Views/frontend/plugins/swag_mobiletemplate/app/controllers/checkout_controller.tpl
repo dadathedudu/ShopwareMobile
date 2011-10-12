@@ -106,7 +106,7 @@ Ext.regController('checkout', {
 
 		var view, methods = [],
 			userData = App.stores.UserData.proxy.reader.rawData.sUserData,
-			me = this;
+			me = this, method;
 
 		App.Helpers.getRequest(App.RequestURL.getPayment, '', function(data) {
 			this.paymentMethods = data.sPaymentMethods;
@@ -129,7 +129,7 @@ Ext.regController('checkout', {
 
 					/** Set the active payment */
 					if(userData.additional.payment.id == payItem.id) {
-						this.selectedMethod = payItem;
+						method = payItem;
 					}
 				}
 			}
@@ -139,6 +139,8 @@ Ext.regController('checkout', {
 			this.view.paymentField.add(methods);
 
 			/** If payment based on a iframe */
+			this.selectedMethod = method;
+
 			if(this.selectedMethod.embediframe) {
 				var url = this.selectedMethod.embediframe;
 				this.view.submitOrderBtn.setText('Zahlung durchführen').setHandler(function() {

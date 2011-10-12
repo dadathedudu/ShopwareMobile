@@ -748,8 +748,6 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 	 */
 	public function getPaymentMethodsAction()
 	{
-
-		$paymentMethods = Shopware()->Modules()->Admin()->sGetPaymentMeans();
 		
 		$paymentmeans = Shopware()->Db()->query("SELECT * FROM `s_core_paymentmeans`");
 		$paymentmeans = $paymentmeans->fetchAll();

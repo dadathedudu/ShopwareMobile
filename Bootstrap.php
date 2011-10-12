@@ -403,21 +403,20 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		$uniqueID = $request->getParam('sUniqueID');
 		$paymentType = $request->getParam('paymentType');
 
+
 		/** Payment successfully */
 		if($request->getActionName() === 'finish' && !$request->isXmlHttpRequest() && !empty($uniqueID)) {
 				
 			/** PayPal Express Mobile payment */
-			if($view->sUserData['additional']['user']['paymentID'] == 20) {
-				$result = Shopware()->Db()->query('SELECT * FROM s_order WHERE transactionID = ?', array($request->getParam('sUniqueID')));
-				$result = $result->fetch();
+			$result = Shopware()->Db()->query('SELECT * FROM s_order WHERE transactionID = ?', array($request->getParam('sUniqueID')));
+			$result = $result->fetch();
 
-				$view->assign('lastOrder', array(
-					'ordernumber' => $result['ordernumber'],
-					'invoice_amount' => $result['invoice_amount'],
-					'date' => date('H:i:s d.m.Y', strtotime($result['ordertime'])),
-					'payment_method' => 'PayPal'
-				));
-			}
+			$view->assign('lastOrder', array(
+				'ordernumber' => $result['ordernumber'],
+				'invoice_amount' => $result['invoice_amount'],
+				'date' => date('H:i:s d.m.Y', strtotime($result['ordertime'])),
+				'payment_method' => 'PayPal'
+			));
 		}
 
 		/** Payment canceled */
