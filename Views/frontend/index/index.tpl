@@ -69,7 +69,7 @@
 		{* Main categories list item template *}
 		{block name="frontend_mobile_template_main_categories"}{literal}
 		<textarea id="MainCategorylistTpl" class="hidden">
-			<strong>{name}</strong>
+			<strong>{name}</strong> <span class="count">({count})</span>
 		</textarea>
 		{/literal}{/block}
 

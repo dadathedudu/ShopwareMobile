@@ -87,7 +87,8 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 					'id'     => $cat['id'],
 					'name'   => utf8_encode($cat['description']),
 					'desc'   => utf8_encode($this->truncate(strip_tags($categoryInfo['cmstext']), 100)),
-					'sub'    => ($cat['hasSubCategories'] == 1) ? true : false
+					'sub'    => ($cat['hasSubCategories'] == 1) ? true : false,
+					'count'  => $count
 				);
 				$i++;
 			}

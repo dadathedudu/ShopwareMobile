@@ -49,6 +49,13 @@ strong { font-weight: 700 }
 
 /*  SHOP MAIN VIEW
 	------------------------------------------------------------------ */
+.home-banner { margin-top: 10px; }
+.home-banner img {
+	display: block;
+	margin: 0 auto;
+	-webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+	border-top: 1px solid #aaa
+}
 #logo, #logo div { background: url(../images/logo.png) no-repeat center center }
 #logo { height: 55px !important; width: 100% }
 .normalView {
@@ -792,3 +799,6 @@ strong { font-weight: 700 }
 	------------------------------------------------------------------ */
 .main-categories { background: transparent }
 .main-categories .x-list-item-body { background: url('../images/listItem-arrow.png') no-repeat center right }
+.main-categories .x-list-item-body span.count {
+	color: #999; font-size: 12px;
+}

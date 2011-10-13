@@ -41,7 +41,8 @@ App.models.MainCategories = Ext.regModel('MainCategories', {
 		{ name: 'id', type: 'int' },
 		{ name: 'name', type: 'string' },
 		{ name: 'desc', type: 'string' },
-		{ name: 'sub', type: 'string'}
+		{ name: 'sub', type: 'string'},
+		{ name: 'count', type: 'int' }
 	],
 	proxy: {
 		type: 'ajax',
