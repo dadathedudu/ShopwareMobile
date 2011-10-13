@@ -34,12 +34,10 @@ Ext.regController('account', {
 					/* Set user is logged in */
 					isUserLoggedIn = 1;
 
-					view = new App.views.Checkout.index;
-					view.update('');
-					active.setActiveItem(view, {
-						type: 'slide',
-						reverse: true,
-						scope: this
+					Ext.dispatch({
+						controller: 'checkout',
+						action: 'show',
+						parentView: active
 					});
 				}
 			});

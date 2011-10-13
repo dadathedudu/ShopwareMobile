@@ -23,7 +23,6 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 	title: '{s name="MobileCheckoutTitle"}Bestellbest&auml;tigung{/s}',
 	scroll: false,
 	layout: 'card',
-
 	initComponent: function() {
 		var me = this,
 			userData = App.stores.UserData.proxy.reader.rawData.sUserData,
@@ -46,7 +45,7 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 			items: [this.backBtn]
 		});
 
-		/** Cart listing */
+		/** Build up a new basket table based on the normal list just which an different template */
 		this.cartLabel = new Ext.Container({
 			id: 'cartListLabel',
 			html: '<div class="x-form-fieldset-title">{s name="MobileCheckoutCartTitle"}Ihr Warenkorb{/s}</div>'
@@ -117,39 +116,14 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 			scroll: false,
 			listeners: {
 				submit: function(form, response) {
-					if(response.success && response.msg) {
-						Ext.Msg.alert('Bestellung erfolgreich', response.msg, function() {
-							var owner = me.ownerCt;
-
-							/* Clear cart store */
-							App.stores.Cart.removeAll();
-
-							/* Destroy Order confirmation */
-							me.destroy();
-
-							/* Create new cart list on owner */
-							owner.pnl.update('');
-							owner.pnl.show();
-							owner.toolbar.show();
-							owner.doLayout();
-
-							/* Hide checkout button */
-							owner.checkoutBtn.hide();
-
-							/* Slide to home view */
-							Ext.getCmp('viewport').setActiveItem(0, {
-								type: 'slide',
-								reverse: true,
-								scope: this
-							});
-
-							/* Refresh main view */
-							Ext.getCmp('shop').toolBar.hide();
-							Ext.getCmp('shop').doLayout();
-							Ext.getCmp('shop').doComponentLayout();
-							Ext.getCmp('shop').setActiveItem(Ext.getCmp('home'));
-						});
-					}
+					Ext.dispatch({
+						controller: 'checkout',
+						action: 'processOrder',
+						success: (response.success && response.msg) ? true : false,
+						form: form,
+						response: response,
+						owner: me.ownerCt
+					});
 				},
 
 				exception: function(form, response) {
@@ -310,7 +284,12 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 		App.views.Checkout.index.superclass.initComponent.call(this);
 	},
 
-	/** Event handler */
+	/**
+	 * Event listener which triggers when the user clicks the back button in the toolbar
+	 * The method just sets the active item to the cart
+	 *
+	 * @return void
+	 */
 	onBackBtn: function() {
 		var cart = Ext.getCmp('cart');
 		cart.setActiveItem(0, {
@@ -324,7 +303,12 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 		this.destroy();
 	},
 
-	/** Event handler */
+	/**
+	 * Event listener which triggers when the user clicks on the agb button.
+	 * The method open up a panel which displays the configured static site id.
+	 *
+	 * @return void
+	 */
 	onAGBBtn: function() {
 		var me = this;
 		App.Helpers.getRequest(App.RequestURL.customSite, {
@@ -372,7 +356,13 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 			me.setActiveItem(view, 'slide');
 		})
 	},
-
+	
+	/**
+	 * Event listener which triggers when the user clicks on the cancellation right button.
+	 * The method open up a panel which displays the configured static site id.
+	 *
+	 * @return void
+	 */
 	onCancellationRightBtn: function() {
 		var me = this;
 		App.Helpers.getRequest(App.RequestURL.customSite, {
@@ -421,7 +411,17 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 		})
 	},
 
-	/** Event handler */
+	/**
+	 * Event listener which triggers when the user clicks the submit button.
+	 * The method checks if the neccessary checkboxes are checked and
+	 * submits the checkout form to the server side
+	 *
+	 * Note that this event listener could be overwritten if the user
+	 * selects a payment method from an external payment provider like
+	 * PayPal ExpressMobile or Heidelpay
+	 *
+	 * @return void
+	 */
 	onSubmitOrderBtn: function() {
 		var pnl     = this.orderPnl,
 			values  = pnl.getValues(),

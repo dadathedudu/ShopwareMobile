@@ -50,7 +50,6 @@ Ext.regController('detail', {
         });
 
 		if(Ext.isDefined(options.parent)) {
-			console.log(options.parent);
 
 			Ext.getCmp('viewport').setActiveItem(0, { type: 'slide', reverse: true });
 			this.shopView.toolBar.show();
@@ -187,9 +186,6 @@ Ext.regController('detail', {
 			if(!Ext.isEmpty(response.sArticle)) {
 
 				var article = response.sArticle[0];
-
-				console.log(article);
-
 				/** Update ordnumber */
 				me.hiddenOrdernumber.setValue(article.ordernumber);
 				document.getElementById('ordernumberDetail').innerHTML = article.ordernumber;

@@ -53,7 +53,6 @@ Ext.regController('checkout', {
 		if(!isUserLoggedIn) {
 			this.view = this.openAccountView(parentView);
 		} else {
-
 			this.view = this.openCheckoutView(parentView);
 		}
 
@@ -103,6 +102,8 @@ Ext.regController('checkout', {
 	 * @return view
 	 */
 	openCheckoutView: function(parentView) {
+
+		parentView.setLoading(true);
 
 		var view, methods = [],
 			userData = App.stores.UserData.proxy.reader.rawData.sUserData,
@@ -159,8 +160,10 @@ Ext.regController('checkout', {
 			parentView.setActiveItem(this.view, { type: 'slide' });
 			parentView.toolbar.hide();
 			parentView.doComponentLayout();
+			parentView.setLoading(false);
 
 			this.view.pnl.doLayout();
+
 		});
 	},
 
@@ -266,6 +269,54 @@ Ext.regController('checkout', {
 			element.setHTML(price);
 		}
 
+		return true;
+	},
+
+	/**
+	 * Processes the user's order on the client side and checks if the
+	 * order was successfully processed.
+	 *
+	 * Note that this method doesn't send the ajax request to the server, it just
+	 * provides the response to the user and slides to the start page of the template
+	 *
+	 * @param options
+	 */
+	processOrder: function(options) {
+		if(!options.success) {
+			Ext.Msg.alert('{s name="MobileCheckoutOrderFailedTitle"}Bestellung fehlgeschlagen{/s}', response.msg);
+			return false
+		}
+		Ext.Msg.alert('Bestellung erfolgreich', response.msg, function() {
+			var owner = options.owner;
+
+			/* Clear cart store */
+			App.stores.Cart.removeAll();
+
+			/* Destroy Order confirmation */
+			me.destroy();
+
+			/* Create new cart list on owner */
+			owner.pnl.update('');
+			owner.pnl.show();
+			owner.toolbar.show();
+			owner.doLayout();
+
+			/* Hide checkout button */
+			owner.checkoutBtn.hide();
+
+			/* Slide to home view */
+			Ext.getCmp('viewport').setActiveItem(0, {
+				type: 'slide',
+				reverse: true,
+				scope: this
+			});
+
+			/* Refresh main view */
+			Ext.getCmp('shop').toolBar.hide();
+			Ext.getCmp('shop').doLayout();
+			Ext.getCmp('shop').doComponentLayout();
+			Ext.getCmp('shop').setActiveItem(Ext.getCmp('home'));
+		});
 		return true;
 	}
 });

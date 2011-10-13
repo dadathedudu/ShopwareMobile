@@ -74,7 +74,6 @@ Ext.regController('category', {
     },
 
 	showSubCategories: function(options) {
-		console.log('showSubCategories');
 		var store, type, direction, list = Ext.getCmp('subListing');
 
 		if(!options.store) {
