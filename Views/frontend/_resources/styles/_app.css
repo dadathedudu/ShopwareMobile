@@ -70,7 +70,8 @@ strong { font-weight: 700 }
 .slideArticle .art_thumb,
 .slideArticle .name,
 .slideArticle .price,
-.slideArticle .desc { position: absolute; left: 15px }
+.slideArticle .desc,
+.slideArticle .more { position: absolute; left: 15px }
 
 .slideArticle .name,
 .slideArticle .price,
@@ -106,6 +107,14 @@ strong { font-weight: 700 }
 .slideArticle .desc {
 	text-shadow: 1px 1px 1px #fff;
 }
+.slideArticle .more {
+	top: 129px; left: auto;
+	right: 30px;
+	font-size: 12px;
+	font-weight: 700;
+	text-shadow: 1px 1px 1px #fff;
+}
+
 /* Maincategories */
 .x-list,
 .x-list-item {

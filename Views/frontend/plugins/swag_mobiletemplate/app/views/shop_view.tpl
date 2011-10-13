@@ -47,9 +47,11 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 		App.stores.Promotions.load({
 			scope: this,
 			callback: function(records) {
+
+				/** Get all promotion article in a suitable form */
 				Ext.each(records, function(rec) {
 					me.promotionItems.push({
-						html: '<div class="slideArticle" data-articleid="'+rec.get('articleID')+'"><div class="art_thumb" style="background-image: url(' + rec.get('img_url') + ')"></div><div class="name">' + rec.get('name') + '</div><div class="price">' + rec.get('price') + ' &euro;*</div><div class="desc">' + rec.get('desc') + '</div></div>',
+						html: '<div class="slideArticle" data-articleid="'+rec.get('articleID')+'"><div class="art_thumb" style="background-image: url(' + rec.get('img_url') + ')"></div><div class="name">' + rec.get('name') + '</div><div class="price">' + rec.get('price') + ' &euro;*</div><div class="desc">' + rec.get('desc') + '</div><div class="more">{s name="MobilePromotionsMore" force}Zum Artikel &raquo;{/s}</div></div>',
 						cls: 'slideArticle'
 					});
 				});
@@ -127,8 +129,6 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 			}
 		});
 
-		this.topSel
-
 		/** Link to the normal version */
 		this.normalView = new Ext.Panel({
 			fullscreen: false,
@@ -147,6 +147,7 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 			}
 		});
 
+		/** Legal notication */
 		this.starNotice = new Ext.Component({
 			style: 'height: 45px',
 			html: '<div class="priceNotice x-form-fieldset-instructions">{s name="MobileShopPriceNoticeText"}* Alle Preise inkl. gesetzl. Mehrwertsteuer zzgl. Versandkosten und ggf. Nachnahmegebühren, wenn nicht anders beschrieben{/s}</div>'
