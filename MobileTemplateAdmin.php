@@ -99,7 +99,8 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 				array('value' => 'red', 'displayText' => 'Rot'),
 				array('value' => 'turquoise', 'displayText' => utf8_encode('Türkis')),
 				array('value' => 'neon', 'displayText' => 'Neon'),
-				array('value' => 'vintage',  'displayText' => 'Vintage')
+				array('value' => 'vintage',  'displayText' => 'Vintage'),
+				array('value' => 'light-blue', 'displayText' => 'Hellblau')
 			)
 		);
 
