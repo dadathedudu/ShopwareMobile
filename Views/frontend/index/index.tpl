@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
     
     <link rel="stylesheet" href="{link file={$shopwareMobile.template} fullPath}" type="text/css">
-    <link rel="stylesheet" href="{link file='frontend/_resources/styles/_app.css' fullPath}" type="text/css">
+    <link rel="stylesheet" href="{link file='frontend/_resources/styles/app.css' fullPath}" type="text/css">
 
     {if $shopwareMobile.additionalCSS|| $shopwareMobile.logoPath}
         <style type="text/css">
