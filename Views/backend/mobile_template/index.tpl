@@ -432,92 +432,32 @@ Ext.ns('Shopware.SwagMobileTemplate');
 			});
 			
 			this.nativeFieldSet = new Ext.form.FieldSet({
-				title: 'Applikationseinstellungen',
+				title: 'Native Applikation einreichen',
 				labelWidth: 250,
-				
-				width: '50%',
+				defaults: {
+					width: 400
+				},
 				items: [{
-					// App name
 					xtype: 'textfield',
-					fieldLabel: 'Titel',
+					name: 'shopName',
+					fieldLabel: 'Shop-Name',
+					value: '{$this->config('Shopname')}',
 					allowBlank: false,
-					name: 'apptitle',
-					width: 250,
-					value: '{$apptitle}'
+					required: true
 				}, {
-					// Version
 					xtype: 'textfield',
-					fieldLabel: 'Version',
-					allowBlank: false,
-					name: 'appversion',
-					width: 250,
-					value: '{$appversion}'
+					name: 'contactPerson',
+					fieldLabel: 'Ansprechpartner',
+					emptyText: 'Max Mustermann',
+					required: true,
+					allowBlank: false
 				}, {
-					// Release date
-					fieldLabel: 'Ver&ouml;ffentlichsdatum',
-					xtype: 'datefield',
-					allowBlank: false,
-					width: 250,
-					name: 'publish_date',
-					value: '{$publishdate}'
-				}, {
-					// Keywords
-					fieldLabel: 'Keywords',
-					name: 'keywords',
-					xtype: 'textfield',
-					allowBlank: false,
-					width: 250,
-					value: '{$keywords}'
-				}, {
-					// Contact eMail Address
-					xtype: 'textfield',
-					allowBlank: false,
-					width: 250,
-					fieldLabel: 'Kontakt eMail Adresse',
-					name: 'contact_email',
-					value: '{$contact_email}'
-				}, {
-					// Support URL
-					xtype: 'textfield',
-					name: 'support_url',
-					allowBlank: false,
-					width: 250,
-					fieldLabel: 'Support URL',
-					value: '{$support_url}'
-				}, {
-					// App URL
-					xtype: 'textfield',
-					name: 'app_url',
-					fieldLabel: 'App-URL (optional)',
-					width: 250,
-					value: '{$app_url}'
-				}, {
-					// Description
 					xtype: 'textarea',
-					fieldLabel: 'Beschreibung',
-					width: 250,
-					height: 175,
-					name: 'description',
+					name: 'msg',
+					fieldLabel: 'Anfrage-Text',
+					required: true,
 					allowBlank: false,
-					value: '{$description}'
-				}, {
-					// Changelog
-					xtype: 'textarea',
-					fieldLabel: 'Changelog (falls ältere Version verfügbar)',
-					width: 250,
-					height: 175,
-					name: 'changelog',
-					allowBlank: true,
-					value: '{$changelog}'
-				}, {
-					// iPhone Screenshots hochladen
-					xtype: 'fileuploadfield',
-					emptyText: '',
-					fieldLabel: 'Screenshots Upload (Mehrfachauswahl)',
-					buttonText: 'Screens auswählen',
-					name: 'screenshots[]',
-					width: 250,
-					multiple: true
+					height: 225
 				}]
 			});
 			
@@ -532,13 +472,13 @@ Ext.ns('Shopware.SwagMobileTemplate');
 				padding: 15,
 				autoScroll: true,
 				fileUpload: true,
-				disabled: true,
+				disabled: false,
 				title: 'Native Applikation einreichen',
 				items: [{
 					// Price information
 					bodyBorder: false,
 					cls: 'native_teaser',
-					html: '<h2>Shopware Mobile - Native Applikation</h2><p>Shopware Mobile kann auch als native App bereitgestellt werden. So können Sie als Shopbetreiber die App Stores von Apple, Android und co. als zusätzliches Marketinginstrument nutzen und sich dauerhaft auf den Smartphones Ihrer Kunden platzieren.</p><p>Füllen Sie hierzu das Formular "Applikationseinstellungen" aus und wir senden Ihnen eine Bestätigung, wenn die Applikation erfolgreich erstellt wurde.</p><p class="price"><strong>Einmalige Einrichtungsgeb&uuml;hr:</strong> <span>99,00 &euro;</span></p><p class="price"><strong>Monatliche Kosten:</strong> <span>79,00 &euro;</span></p>'
+					html: '<h2>Shopware Mobile - Native Applikation</h2><p>Shopware Mobile kann auch als native App bereitgestellt werden. So können Sie als Shopbetreiber die App Stores von Apple, Android und co. als zusätzliches Marketinginstrument nutzen und sich dauerhaft auf den Smartphones Ihrer Kunden platzieren.</p><p>Füllen Sie hierzu das Formular "Native Applikation einreichen" aus. Nach der erfolgreichen &Uuml;bermittelung Ihrer Daten werden wir mit Ihnen in Kontakt treten um weitere Einzelheiten zu kl&auml;ren.</p><p class="price"><strong>Einmalige Einrichtungsgeb&uuml;hr:</strong> <span>99,00 &euro;</span></p><p class="price"><strong>Monatliche Kosten:</strong> <span>79,00 &euro;</span></p>'
 
 				}, this.holderPnl],
 				buttons: [{
@@ -555,6 +495,7 @@ Ext.ns('Shopware.SwagMobileTemplate');
 		        					buttons: Ext.Msg.OK,
 		        					icon: Ext.MessageBox.INFO
 		        				});
+								form.reset();
 		        			},
 		        			failure: function(form, response) {
 		        				Ext.Msg.show({
@@ -566,39 +507,13 @@ Ext.ns('Shopware.SwagMobileTemplate');
 		        			}
 		        		})
 		        	}
-				}, {
-					text: 'Applikation einreichen',
-					scope: this,
-					disabled: true,
-					handler: function() { alert('super ingo'); }
 				}]
 			});
-			
-			{if $screenshots}
-				var htmlStr = '';
-				{foreach $screenshots as $screen}
-					htmlStr += '<img src="{$screen}" />';
-				{/foreach}
-			
-				this.screenshots = new Ext.form.FieldSet({
-					title: 'Screenshots',
-					width: '49%',
-					style: 'margin-left: 1%',
-					items: [{
-						xtype: 'panel',
-						bodyBorder: false,
-						height: 285,
-						width: 420,
-						id: 'screensPnl',
-						html: '<div class="screens">'+htmlStr+'</div>'
-					}]
-				});
-				this.holderPnl.add(this.screenshots);
-			{/if}
+
 
 			/** Main tabpanel navigation */
 			this.tabPnl = new Ext.TabPanel({
-				activeTab: 0,
+				activeTab: 2,
 				region: 'center',
 				autoWidth: false,
 				items: [this.generellPnl, this.designPnl, this.nativePnl]

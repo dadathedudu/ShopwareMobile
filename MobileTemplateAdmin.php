@@ -546,132 +546,48 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 	 * Handles the whole native application tab of
 	 * the backend module.
 	 *
-	 * TODO: This methods needs a refactor due to the new requirements
-	 *
 	 * @return void
 	 */
 	public function processNativeApplicationFormAction()
 	{
 		$request = $this->Request();
-		
-		$screenshots = $_FILES['screenshots'];
 
-		// Check if the user chooses a new icon
-		if(is_array($screenshots) && $screenshots['error'] === 0) {
-		
-			$count = @count($screenshots['name']);
-			
-			$screens = array();
-			for($i = 0; $i < $count; $i++) {
-				$screens[$i] = array(
-					'name'     => $screenshots['name'][$i],
-					'type'     => $screenshots['type'][$i],
-					'tmp_name' => $screenshots['tmp_name'][$i],
-					'error'    => $screenshots['error'][$i],
-					'size'     => $screenshots['size'][$i]
-				);
-			}
-			
-			$uploadedScreens = array();
-			$i = 0;
-			foreach($screens as $screen) {
-				$uploadedScreens[] = $this->processUpload($screen, $i, 'screenshot');
-				$i++;
-			}
-			
-			$uploadedScreens = implode('|', $uploadedScreens);
-			
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$uploadedScreens' WHERE `name` LIKE 'screenshots';");
+		$email = 'te@shopware.de';
+		$msg = $request->getParam('msg');
+		$contactPerson = $request->getParam('contactPerson');
+
+		$template = Shopware()->Config()->get('sTemplates')->sMobileNativeApplicationRequest;
+
+		$template['content'] = str_replace('{sMail}', $email, $template['content']);
+		$template['content'] = str_replace('{sShopURL}', 'http://'.Shopware()->Config()->BasePath, $template['content']);
+		$template['content'] = str_replace('{sShop}', Shopware()->Config()->ShopName, $template['content']);
+		$template['content'] = str_replace('{sMessage}', $msg, $template['content']);
+		$template['content'] = str_replace('{sContactPerson}', $contactPerson, $template['content']);
+
+		$mail           = clone Shopware()->Mail();
+		$mail->From     = $template['frommail'];
+		$mail->FromName = $template['fromname'];
+		$mail->Subject  = $template['subject'];
+
+		if ($template['ishtml']){
+			$mail->IsHTML(1);
+			$mail->Body     = $template['contentHTML'];
+			$mail->AltBody     = $template['content'];
+		} else {
+			$mail->IsHTML(0);
+			$mail->Body     = $template['content'];
 		}
 
-		//App Title
-		$apptitle = $request->getParam('apptitle');
-		if(isset($apptitle)) {
+		$mail->ClearAddresses();
 
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$apptitle' WHERE `name` LIKE 'apptitle';");
+		$mail->AddAddress($email, '');
+
+		if (!$mail->Send()){
+			throw new Enlight_Exception("Could not send mail");
+		} else {
+			echo Zend_Json::encode(array('success' => true, 'message' => 'Ihre Anfrage wurde erfolgreich versendet. Sie erhalten in K&uuml;rze eine R&uuml;ckmeldung.'));
 		}
 
-		//App version
-		$appversion = $request->getParam('appversion');
-		if(isset($apptitle)) {
-
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$appversion' WHERE `name` LIKE 'appversion';");
-		}
-
-		//Publish date
-		$publishdate = $request->getParam('publish_date');
-		if(isset($publishdate)) {
-
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$publishdate' WHERE `name` LIKE 'publishdate';");
-		}
-
-		// Keywords
-		$keywords = $request->getParam('keywords');
-		if(isset($keywords)) {
-
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$keywords' WHERE `name` LIKE 'keywords';");
-		}
-
-		// Contact email address
-		$contact_email = $request->getParam('contact_email');
-		if(isset($contact_email)) {
-
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$contact_email' WHERE `name` LIKE 'contact_email';");
-		}
-
-		// Support URL
-		$support_url = $request->getParam('support_url');
-		if(isset($support_url)) {
-
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$support_url' WHERE `name` LIKE 'support_url';");
-		}
-
-		// App URL
-		$app_url = $request->getParam('app_url');
-		if(isset($support_url)) {
-
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$app_url' WHERE `name` LIKE 'app_url';");
-		}
-
-		// Description
-		$description = $request->getParam('description');
-		if(isset($description)) {
-
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$description' WHERE `name` LIKE 'description';");
-		}
-
-		// Changelog
-		$changelog = $request->getParam('changelog');
-		if(isset($changelog)) {
-
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$changelog' WHERE `name` LIKE 'changelog';");
-		}
-	
-		$data = array(
-			'url'          => $this->basePath,
-			'title'        => $this->props['apptitle'],
-			'version'      => $this->props['appversion'],
-			'publishdate'  => $this->props['publishdate'],
-			'keywords'     => $this->props['keywords'],
-			'contact_email'=> $this->props['contact_email'],
-			'support_url'  => $this->props['support_url'],
-			'app_url'      => $this->props['app_url'],
-			'desc'         => $this->props['description'],
-			'changelog'    => $this->props['changelog'],
-			'splash'       => $this->props['startupUpload'],
-			'icon'         => $this->props['iconUpload'],
-			'useAsSubshop' => $this->props['useAsSubshop'],
-			'subshop'      => $this->props['subshopID'],
-			'screenshots'  => $this->props['screenshots'],
-			'mail'         => $this->config->mail
-		);
-	
-		// Add application to our PhoneGap Dashboard
-		$this->addNativeApplication($data);
-		
-		// Return Message
-		$message = 'Das Formular wurde erfolgreich gespeichert. Wir werden in K&uuml;rze mit Ihnen in Kontakt treten.';
-		echo Zend_Json::encode(array('success' => true, 'message' => $message));
 		die();
 	}
 

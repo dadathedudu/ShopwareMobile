@@ -73,9 +73,17 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 			('changelog', '');"
 		);
 
+		/** Add new mail template */
+		$sql = "INSERT INTO `s_core_config_mails` (`id`, `name`, `frommail`, `fromname`, `subject`, `content`, `contentHTML`, `ishtml`, `htmlable`, `attachment`) VALUES (NULL, 'sMobileNativeApplicationRequest', 'info@example.com', 'info@example.com', 'Antrag - Native Applikation auf Basis von Shopware Mobile', 'Hallo Shopware-Team,\r\n\r\nich möchte gerne eine native Applikation für meinen Shop bei Ihnen beantragen.\r\n\r\nDie Rahmeninformationen lauten wie folgt:\r\n\r\nAnsprechpartner: {sContactPerson}\r\n\r\nShop-Name: {sShop}\r\n\r\nShop-URL: {sShopURL}\r\n\r\nBeschreibung: {sMessage}\r\n\r\n', '', 0, 0, '');";
+		Shopware()->Db()->query($sql);
+
 		$form = $this->Form();
-		$form->setElement('controllerbutton', 'Backendmodul aufrufen', array('label'=>'Shopware Mobile Beta 2 Backend Modul &ouml;ffnen','value'=>'','attributes'=>array('controller'=>'MobileTemplate','action'=>'skeleton')));
+		$form->setElement('controllerbutton', 'Backendmodul aufrufen', array('label'=>'Shopware Mobile Backend Modul &ouml;ffnen','value'=>'','attributes'=>array('controller'=>'MobileTemplate','action'=>'skeleton')));
 		$form->save();
+
+		Shopware()->Cache()->clean(Zend_Cache::CLEANING_MODE_MATCHING_ANY_TAG, array(
+			'Shopware_Config'
+		));
 
 		return true;
 	}
@@ -94,6 +102,9 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		
 		// Delete menu entry
 		Shopware()->Db()->query(" DELETE IGNORE FROM `s_core_menu` WHERE `name` = 'Shopware Mobile'");
+
+		/* Delete the mail template */
+		Shopware()->Db()->query("DELETE IGNORE FROM `s_core_config_mails` WHERE `name` = 'sMobileNativeApplicationRequest'");
 		
 		// Delete previous entries
 		$this->deletePreviousEntries();
@@ -399,6 +410,7 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		$subject = $args->getSubject();
 		$request = $subject->Request();
 		$view = $args->getSubject()->View();
+		$mobileSession = Shopware()->Session()->Mobile;
 
 		$uniqueID = $request->getParam('sUniqueID');
 		$paymentType = $request->getParam('paymentType');
@@ -427,7 +439,7 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		}
 
 		/** Load the basic structure */
-		if(!$request->isXmlHttpRequest()) {
+		if(!$request->isXmlHttpRequest() && $mobileSession === 1) {
 			$view->loadTemplate(dirname(__FILE__) . '/Views/frontend/index/index.tpl');
 		}
 	}
