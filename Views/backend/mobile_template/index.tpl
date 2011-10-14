@@ -2,54 +2,8 @@
 
 {block name="backend_index_body_inline"}
 <link rel="stylesheet" media="screen, projection" href="{link file='backend/mobile_template/uploader/fileuploadfield.css'}" />
-{literal}
-<style type="text/css">
-*:focus { outline: none }
-.pnl { font: 11px/normal Verdana, sans-serif; }
-.error, .notice, .success {padding:.8em;margin-bottom:1em;border:2px solid #ddd;}
-.error, .instyle_error, input.instyle_error {background:#FBE3E4;color:#8a1f11;border-color:#FBC2C4;}
-.notice {background:#FFF6BF;color:#514721;border-color:#FFD324;}
-.success, .instyle_success {background:#E6EFC2;color:#264409;border-color:#C6D880;}
-.error a {color:#8a1f11;}
-.notice a {color:#514721;}
-.success a {color:#264409;}
-strong { font-weight: 700 }
-.swag_notice .x-panel-body-noheader { border: 0 none }
-#iphonePreview .x-panel-body .preview img {
-	width: 198px;
-	height: 372px;
-	margin: 0 auto;
-	display: block;
-}
-#iphonePreview .x-panel-body { padding: 15px; }
-#iphonePreview .x-panel-body h3 {
-	font: 700 14px tahoma,arial,helvetica,sans-serif; margin: 0 0 1em;
-} 
-p.desc, .native_teaser { font: 12px tahoma,arial,helvetica,sans-serif; margin: 0 0 1em; }
-.native_teaser {
-	background: url({/literal}{link file='backend/mobile_template/img/pic_step3.jpg'}{literal}) no-repeat right bottom;
-	min-height: 124px;
-	padding-right: 344px;
-}
-.native_teaser p, .native_teaser h2 { margin: 0 0 1em }
-.screens { overflow: hidden; width: {/literal}{$screenshots|@count * 190}{literal}px; height: 276px; background: #efefef; }
-.screens img {
-	height: 230px;
-	width: 160px;
-	display: block;
-	float: left;
-	-webkit-box-shadow: 0 0 8px #111;
-	-moz-box-shadow: 0 0 8px #111;
-	margin: 15px;
-}
-#screensPnl { border: 1px solid #c7c7c7; }
-#screensPnl .x-panel-body {
-	overflow-x: scroll;
-	background: #F7F7F7;
-}
+{include file="backend/mobile_template/styles.tpl"}
 
-</style>
-{/literal}
 <script type="text/javascript" src="{link file='backend/mobile_template/uploader/FileUploadField.js'}"></script>
 <script type="text/javascript">
 Ext.ns('Shopware.SwagMobileTemplate');
@@ -60,6 +14,17 @@ Ext.ns('Shopware.SwagMobileTemplate');
 	    layout: 'border',
 	    initComponent: function() {
 			var me = this;
+
+			this.subShopStore = new Ext.data.JsonStore({
+				url: '{url controller="MobileTemplate" action="getSubshopStore"}',
+				storeId: 'subShopStore',
+				root: 'data',
+				idProperty: 'id',
+				successProperty: 'success',
+				totalProperty: 'totalCount',
+				fields: [ 'id', 'valueField', 'displayText' ]
+			});
+
 			
 			/** General settings form panel */
 			this.generellPnl = new Ext.FormPanel({
@@ -169,12 +134,16 @@ Ext.ns('Shopware.SwagMobileTemplate');
 						name: 'useAsSubshop',
 						checked: {if $useAsSubshop}true{else}false{/if}
 					}, {
-						// Subshop ID
-						xtype: 'textfield',
-						fieldLabel: 'Subshop-ID',
-						name: 'subshopID',
-						width: 200,
-						value: '{$subshopID}'
+						fieldLabel: 'Subshop-Auswahl',
+			            xtype: 'combo',
+			            mode: 'remote',
+			            triggerAction: 'all',
+			            name: 'subshopID',
+			            value: '{$subshopID}',
+			            store: this.subShopStore,
+			            hiddenName: 'hiddenSubShopID',
+			            displayField: 'displayText',
+			            valueField: 'valueField'
 					}],
 					buttons: [{
 			        	text: 'Subshop Anpassungen speichern',
@@ -231,7 +200,7 @@ Ext.ns('Shopware.SwagMobileTemplate');
 				valueField: 'value',
 				displayField: 'displayText'
 			});
-			
+
 			/** Design related settings form panel */
 			this.designFormPnl = new Ext.FormPanel({
 				bodyBorder: false,
@@ -626,7 +595,7 @@ Ext.ns('Shopware.SwagMobileTemplate');
 				});
 				this.holderPnl.add(this.screenshots);
 			{/if}
-			
+
 			/** Main tabpanel navigation */
 			this.tabPnl = new Ext.TabPanel({
 				activeTab: 0,

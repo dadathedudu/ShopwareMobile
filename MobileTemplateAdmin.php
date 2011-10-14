@@ -296,7 +296,7 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 		}
 
 		//Subshop-ID
-		$subshopID = $request->getParam('hiddenSubshop');
+		$subshopID = $request->getParam('hiddenSubshopID');
 		if(isset($subshopID)) {
 			$subshopID = intval($subshopID);
 			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$subshopID' WHERE `name` LIKE 'subshopID';");

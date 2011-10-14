@@ -173,7 +173,6 @@ App.CartClass = Ext.extend(Ext.util.Observable,
                 articleId: idx,
                 orderNumber: ordernumber
             }, function(data) {
-                console.log(data);
                 items.removeByKey(idx);
                 me.articleCount--;
                 me.refreshAmount();
@@ -264,60 +263,6 @@ App.CartClass = Ext.extend(Ext.util.Observable,
             var cartBtn = Ext.getCmp('viewport').getCartButton();
             cartBtn.setBadge(val);
             return true;
-        },
-
-        /**
-         * Adds debug articles to the cart
-         *
-         * @deprecated Will be removed from the retail release
-         * @private
-         */
-        _debugAddExampleArticles: function() {
-            var me = this;
-            var articles = [
-                'SW10009'/*,
-                'SW10010',
-                'SW10011',
-                'SW10012',
-                'SW10014',
-                'SW10015',
-                'SW10016',
-                'SW10017',
-                'SW10018',
-                'SW10019',
-                'SW10020',
-                'SW10021',
-                'SW10022',
-                'SW10023',
-                'SW10024',
-                'SW10025',
-                'SW10026',
-                'SW10027',
-                'SW10028',
-                'SW10029',
-                'SW10030',
-                'SW10031',
-                'SW10032',
-                'SW10034',
-                'SW10035',
-                'SW10036',
-                'SW10037',
-                'SW10038',
-                'SW10039',
-                'SW10040',
-                'SW10041',
-                'SW10042',
-                'SW10043',
-                'SW10044',
-                'SW10045',
-                'SW10046',
-                'SW10047',
-                'SW10048' */
-            ];
-
-            Ext.each(articles, function(article) {
-                me.add( { sOrdernumber: article } );
-            });
         }
     }
 );
