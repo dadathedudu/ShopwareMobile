@@ -513,7 +513,7 @@ Ext.ns('Shopware.SwagMobileTemplate');
 
 			/** Main tabpanel navigation */
 			this.tabPnl = new Ext.TabPanel({
-				activeTab: 2,
+				activeTab: 0,
 				region: 'center',
 				autoWidth: false,
 				items: [this.generellPnl, this.designPnl, this.nativePnl]

@@ -399,7 +399,9 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 		} else {
 			$article['articleName'] = $this->utf8encode($article['articleName']);
 		}
-		$article['description_long'] = $this->utf8encode($article['description_long']);
+
+		// Fix encoding and remove all html tags from the description
+		$article['description_long'] = $this->utf8encode(strip_tags(htmlentities($article['description_long'])));
 		
 		$article['priceNumeric'] = preg_replace('/,/', '.', $article['price']);
 		if(!empty($article['pseudoprice'])) {
