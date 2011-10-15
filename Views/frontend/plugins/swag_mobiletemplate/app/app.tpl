@@ -160,7 +160,7 @@ App.RequestURL = {
 	addComment:    App.basePath + '/MobileTemplate/addComment',
 	login:         App.basePath + '/MobileTemplate/login',
 	register:      App.basePath + '/register/saveRegister',
-	useNormalSite: App.basePath + '/useNormal',
+	useNormalSite: App.basePath + '?sMobile=0',
 	userLoggedIn:  App.basePath + '/MobileTemplate/isUserLoggedIn',
 	getUserData:   App.basePath + '/MobileTemplate/getUserData',
 	getPayment:    App.basePath + '/MobileTemplate/getPaymentMethods',

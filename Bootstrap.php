@@ -78,6 +78,10 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		Shopware()->Db()->query($sql);
 
 		$form = $this->Form();
+		$form->setElement('checkbox', 'showNotice', array('label'=>'Meldung anzeigen, dass eine mobile Variante zur Verfügung steht', 'value'=>'1', 'scope'=>Shopware_Components_Form::SCOPE_SHOP));
+		$form->setElement('text', 'startColor', array('label'=>'Start-Farbe der Meldung (Hex-Code)', 'value'=>'#FF6400', 'scope'=>Shopware_Components_Form::SCOPE_SHOP));
+		$form->setElement('text', 'endColor', array('label'=>'End-Farbe der Meldung (Hex-Code)', 'value'=>'#DD4800', 'scope'=>Shopware_Components_Form::SCOPE_SHOP));
+		$form->setElement('text', 'textColor', array('label'=>'Text-Farbe der Meldung (Hex-Code)', 'value'=>'#FFFFFF', 'scope'=>Shopware_Components_Form::SCOPE_SHOP));
 		$form->setElement('controllerbutton', 'Backendmodul aufrufen', array('label'=>'Shopware Mobile Backend Modul &ouml;ffnen','value'=>'','attributes'=>array('controller'=>'MobileTemplate','action'=>'skeleton')));
 		$form->save();
 
@@ -203,6 +207,124 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
     {
     	return include(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Meta.php');
     }
+
+	/**
+	 * Passes the plugin configuration to the view, handles the subshop
+	 * support, checks if the the used device is supported and sets
+	 * the backend module icon
+	 *
+	 * @static
+	 * @access public
+	 * @param Enlight_Event_EventArgs $args
+	 * @return
+	 */
+	public static function onPostDispatch(Enlight_Event_EventArgs $args)
+	{
+		$request = $args->getSubject()->Request();
+		$response = $args->getSubject()->Response();
+		$view = $args->getSubject()->View();
+		$pluginOpts = Shopware()->Plugins()->Frontend()->SwagMobileTemplate()->Config();
+
+		$useMobile = ($_POST['sMobile'] == 1 ? true : false);
+		$session = &Shopware()->Session()->Mobile;
+
+		if(!$request->isDispatched() || $response->isException() || $request->getModuleName() !== 'frontend') {
+			
+			// Add icon for backend module
+			if($request->getModuleName() == 'backend') {
+				$view->extendsBlock('backend_index_css', '<style type="text/css">a.iphone { background-image: url("'. self::$icnBase64 .'"); background-repeat: no-repeat; }</style>', 'append');
+			}
+			return;
+		}
+
+		// Get plugin settings from our own db table
+		$config = Shopware()->Db()->fetchAll('SELECT * FROM `s_plugin_mobile_settings`');
+		$properties = array();
+		foreach($config as $prop) {
+			$properties[$prop['name']] = $prop['value'];
+		}
+		$config = $properties;
+
+		// Check the device of the user
+		$version = self::checkForMobileDevice($config['supportedDevices']);
+
+		if(!$session['useMobile']) {
+
+			if($config['useAsSubshop'] === 1) {
+				if(Shopware()->System()->sLanguage == $config['subshopID'] && $version == 'mobile') {
+					$session['useMobile'] = true;
+					// TODO - Redirect to the base path
+				} else {
+					$session['useMobile'] = false;
+				}
+
+			} else {
+				if($useMobile && $version == 'mobile') {
+					$session['useMobile'] = true;
+					// TODO - Redirect to the base path
+				} else {
+					$session['useMobile'] = false;
+				}
+			}
+		}
+
+		/** Redirect to the normal view */
+		if(!$useMobile) { $session['useMobile'] = false; }
+
+		if(!isset($session['firstVisit'])) {
+			$session['firstVisit'] = true;
+		} else {
+			$session['firstVisit'] = false;
+		}
+
+		if($session['useMobile'] === true) {
+
+			// Render the mobile template
+			$dirs = Shopware()->Template()->getTemplateDir();
+			$newDirs = array_merge(array(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR), $dirs);
+			Shopware()->Template()->setTemplateDir($newDirs);
+
+			$basepath = Shopware()->Config()->BasePath;
+
+			// Assign plugin configuration
+			$view->assign('shopwareMobile', array(
+				'additionalCSS'  => $config['additionalCSS'],
+				'isUserLoggedIn' => Shopware()->Modules()->sAdmin()->sCheckUser(),
+				'useNormalSite'  => $config['showNormalVersionLink'],
+				'template'       => 'frontend'. DIRECTORY_SEPARATOR . '_resources'.DIRECTORY_SEPARATOR.'styles' . DIRECTORY_SEPARATOR . trim($config['colorTemplate']) . '.css',
+				'useVoucher'     => $config['useVoucher'],
+				'useNewsletter'  => $config['useNewsletter'],
+				'useComment'     => $config['useComment'],
+				'logoPath'       => $config['logoUpload'],
+				'logoHeight'     => $config['logoHeight'],
+				'iconPath'       => $config['iconUpload'],
+				'glossOnIcon'    => $config['glossOnIcon'],
+				'startUpPath'    => $config['startupUpload'],
+				'statusBarStyle' => $config['statusbarStyle'],
+				'payments'       => $config['supportedPayments'],
+				'agbID'          => $config['agbInfoID'],
+				'cancellationID' => $config['cancelRightID'],
+				'checkboxGreen'  => $config['checkboxesGreen'],
+				'basePath'       => $basepath
+			));
+
+			return;
+		}
+
+		// Render the normal version and show a hint to use shopware mobile
+		$view->addTemplateDir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR);
+			
+			$view->assign('shopwareMobile', array(
+				'useSubShop' => $config['useAsSubshop'],
+				'subShopId'  => $config['subshopID'],
+				'userAgents' => $config['supportedDevices'],
+				'basePath'   => $request->getBasePath(),
+				'active'     => $session['firstVisit'],
+				'pluginOpts' => $pluginOpts
+		));
+
+		$view->extendsTemplate('frontend' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'swag_mobiletemplate' . DIRECTORY_SEPARATOR . 'index.tpl');
+	}
     
 	/**
 	 * Passes the plugin configuration to the view, handles the subshop
@@ -214,17 +336,21 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 	 * @param Enlight_Event_EventArgs $args
 	 * @return
 	 */
-    public static function onPostDispatch(Enlight_Event_EventArgs $args)
+   /**public static function onPostDispatch(Enlight_Event_EventArgs $args)
     {	
     	$request = $args->getSubject()->Request();
 		$response = $args->getSubject()->Response();
 		$view = $args->getSubject()->View();
 
+		$normalSite = $request->getParam('mobile');
+		$normalSite = (!empty($normalSite) && $normalSite != 0 ? true : false);
+		$mobileSession = Shopware()->Session()->Mobile;
+
 		if(!$request->isDispatched() || $response->isException() || $request->getModuleName() !== 'frontend'){
 			return;
 		}
 
-
+		// Get settings for the mobile Version from the db
 		$config = Shopware()->Db()->fetchAll('SELECT * FROM `s_plugin_mobile_settings`');
 		$properties = array();
 		foreach($config as $prop) {
@@ -233,32 +359,22 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		$config = $properties;
 
 		$version = self::checkForMobileDevice($config['supportedDevices']);
+	
+	    // Check if the mobile template will be used as a subshop
+		if($config['useAsSubshop'] === 1) {
+			$mobileSession = (Shopware()->System()->sLanguage == $config['subshopID'] ? true : false);
+		} else {
 
-	    // Set session value
-	    if($config['useAsSubshop'] == 1) {
-		    if(Shopware()->System()->sLanguage == $config['subshopID']) {
-			    Shopware()->Session()->Mobile = 1;
-		    } else {
-			    Shopware()->Session()->Mobile = 0;
-		    }
-	    } else {
-			if($request->sMobile == '1' && $request->sAction == 'useNormal') {
-				Shopware()->Session()->Mobile = 0;
-			} else if($request->sMobile == '1') {
-				Shopware()->Session()->Mobile = 1;
+			if($request->sMobile == 1 && $normalSite == false) {
+				$mobileSession = true;
+			} else {
+				$mobileSession = false;
 			}
-	    }
-
-
-	    // Add icon for Backend module
-		if($request->getModuleName() != 'frontend') {
-			$view->extendsBlock('backend_index_css', '<style type="text/css">a.iphone { background-image: url("'. self::$icnBase64 .'"); background-repeat: no-repeat; }</style>', 'append');
-			return;
 		}
 	    
 	    // Merge template directories
-	    $mobileSession = Shopware()->Session()->Mobile;
-		if($version === 'mobile' && $mobileSession === 1) {
+
+		if($version === 'mobile' && $mobileSession === true) {
 			$dirs = Shopware()->Template()->getTemplateDir();
 			$newDirs = array_merge(array(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR), $dirs);
 			Shopware()->Template()->setTemplateDir($newDirs);
@@ -288,15 +404,14 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 			));
 
 		} else {
-			if(!empty($mobileSession) && $mobileSession == 0) { $active = 1; } else { $active = 0; }
 
 			$view->addTemplateDir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR);
 			$view->assign('shopwareMobile', array(
-				'active'     => $active,
 				'useSubShop' => $config['useAsSubshop'],
 				'subShopId'  => $config['subshopID'],
 				'userAgents' => $config['supportedDevices'],
-				'basePath'   => $request->getBasePath()
+				'basePath'   => $request->getBasePath(),
+				'active'     => $mobileSession
 			));
 
 			$view->extendsTemplate('frontend' . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'swag_mobiletemplate' . DIRECTORY_SEPARATOR . 'index.tpl');
