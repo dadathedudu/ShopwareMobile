@@ -195,9 +195,11 @@
 		<textarea id="Shopdesctpl" class="hidden">
 			<tpl for=".">
 				<div class="clear">&nbsp;</div>
-				<div class="desc">
-					<h2>Artikelbeschreibung:</h2>
-					<p>{description_long}</p>
+				<div class="outer-desc">
+					<div class="desc">
+						<h2>Artikelbeschreibung:</h2>
+						<div class="desc-text">{description_long}</div>
+					</div>
 				</div>
 			</tpl>
 		</textarea>

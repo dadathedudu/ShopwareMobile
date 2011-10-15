@@ -268,12 +268,13 @@ App.views.Shop.info = Ext.extend(Ext.Panel,
 		});
 
 		/** Article description */
+
 		me.desc = new Ext.DataView({
 			store: store,
 			tpl: Ext.XTemplate.from('Shopdesctpl'),
 			scroll: false,
 			autoWidth: true,
-			itemSelector: '.desc'
+			itemSelector: '.outer-desc'
 		});
 
 		Ext.apply(me, {

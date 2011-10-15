@@ -250,12 +250,26 @@ strong { font-weight: 700 }
 }
 .pricePercent + .price { color: #990000; }
 #detail .desc, #detail .links { padding: 10px; }
-#detail .desc h2, #detail .links h2 { font-weight: 700; font-size: 14px; color: #333; margin-bottom: 8px; }
-#detail .desc {
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 8px;
+#detail h2, #detail .links h2 { font-weight: 700; font-size: 14px; color: #333; margin-bottom: 8px; }
+#detail .desc h2 { margin: 0 0 12px }
+#detail .outer-desc {
+	margin: 12px 0 0;
+	overflow: hidden;
+	padding-bottom: 15px;
+	position: relative
 }
+#detail .desc {
+	padding: 12px;
+	width: 100%;
+	border-top: 1px solid #c7c7c7;
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%,white), color-stop(45%,white), color-stop(100%,#F1F1F1));
+	border-bottom: 1px solid #aaa;
+	-webkit-box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+	box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+	font-size: 12px; line-height: 1.5;
+    color: #666;
+}
+#detail .desc .desc-text p:last-child { margin: 0 }
 #detail .desc p, #detail .desc ul, #detail .desc ol { margin-bottom: 1em; }
 #detail .desc ul li, #detail .desc ol li { margin-left: 15px }
 #detail .desc ul li { list-style-type: disc }
