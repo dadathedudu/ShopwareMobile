@@ -1,4 +1,4 @@
-# Shopware Mobile Beta 2
+# Shopware Mobile
 
 - **Required shopware version**: >= 3.5.4
 - **Current stable tag**: 1.2.4
