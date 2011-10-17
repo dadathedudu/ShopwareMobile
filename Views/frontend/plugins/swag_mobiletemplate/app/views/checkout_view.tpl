@@ -311,7 +311,7 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 	 */
 	onAGBBtn: function() {
 		var me = this;
-		App.Helpers.getRequest(App.RequestURL.customSite, {
+		App.Helpers.postRequest(App.RequestURL.customSite, {
 			sCustom: ~~agbID
 		}, function(response) {
 			var view = new Ext.Panel({
@@ -365,7 +365,7 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 	 */
 	onCancellationRightBtn: function() {
 		var me = this;
-		App.Helpers.getRequest(App.RequestURL.customSite, {
+		App.Helpers.postRequest(App.RequestURL.customSite, {
 			sCustom: ~~cancellationID
 		}, function(response) {
 			var view = new Ext.Panel({
