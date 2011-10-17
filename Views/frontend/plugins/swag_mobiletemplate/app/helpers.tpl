@@ -56,6 +56,9 @@ App.Helpers = {
 
     /**
      * Sends an general request to the server
+	 *
+	 * NOTE - If you don't need additional params, please
+	 * pass an empty object to the method.
      *
      * @private
      * @param url
@@ -69,6 +72,7 @@ App.Helpers = {
 
 		// Set mobile param for native applications
 		params.sMobile = 1;
+
 		Ext.Ajax.request({
 			url: url,
 			method: method,

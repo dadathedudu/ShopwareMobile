@@ -135,7 +135,7 @@ App.views.Checkout.index = Ext.extend(Ext.Panel,
 		});
 
 		/** Calculate delivery costs, total sum ... */
-		App.Helpers.postRequest(App.RequestURL.confirm, '', function(response) {
+		App.Helpers.postRequest(App.RequestURL.confirm, {}, function(response) {
 			var totalAmount, net;
 			if(response.amountWithTaxAlone && userData.additional.charge_vat) {
 				totalAmount = response.amountWithTax

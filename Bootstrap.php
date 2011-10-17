@@ -225,7 +225,7 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		$view = $args->getSubject()->View();
 		$pluginOpts = Shopware()->Plugins()->Frontend()->SwagMobileTemplate()->Config();
 
-		$useMobile = ($_POST['sMobile'] == 1 ? true : false);
+		$useMobile = ($request->sMobile == 1 ? true : false);
 		$session = &Shopware()->Session()->Mobile;
 
 		if(!$request->isDispatched() || $response->isException() || $request->getModuleName() !== 'frontend') {
