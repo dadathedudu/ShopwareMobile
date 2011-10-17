@@ -67,6 +67,11 @@ Here's the complete workflow to create an easy to use install package from Shopw
 	$ mv ShopwareMobile SwagMobileTemplate
 	$ cd .. && zip -r SwagMobileTemplate.zip Frontend
 	$ rm -rf Frontend
+
+An alternative way to create a install package is to use our "create-install-package" bash script. Just head over to the location of the script and run the following commands:
+
+	$ chmod a=r+x create-install-package.sh
+	$ ./create-install-package.sh
     
 # Hacking
 
