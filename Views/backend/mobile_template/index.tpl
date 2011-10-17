@@ -439,13 +439,6 @@ Ext.ns('Shopware.SwagMobileTemplate');
 				},
 				items: [{
 					xtype: 'textfield',
-					name: 'shopName',
-					fieldLabel: 'Shop-Name',
-					value: '{$this->config('Shopname')}',
-					allowBlank: false,
-					required: true
-				}, {
-					xtype: 'textfield',
 					name: 'contactPerson',
 					fieldLabel: 'Ansprechpartner',
 					emptyText: 'Max Mustermann',
@@ -455,6 +448,7 @@ Ext.ns('Shopware.SwagMobileTemplate');
 					xtype: 'textarea',
 					name: 'msg',
 					fieldLabel: 'Anfrage-Text',
+					emptyText: 'Ihre Anfrage folgt hier',
 					required: true,
 					allowBlank: false,
 					height: 225
