@@ -561,13 +561,14 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 		$id = (int) $this->Request()->getParam('articleId');
 		$article = Shopware()->Modules()->Articles()->sGetArticleById($id);
 		$images = array();
-
+		
 		// Main image
 		if(!empty($article['image'])) {
 			$images[] = array(
 				'desc' => $this->utf8decode($article['image']['res']['description']),
 				'small_picture' => $this->stripBasePath($article['image']['src'][4]),
 				'big_picture'   => $this->stripBasePath($article['image']['src'][5]),
+				'relations'     => $this->utf8decode($article['image']['res']['relations'])
 			);
 		}
 
@@ -576,7 +577,8 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 				$images[] = array(
 					'desc' => $this->utf8decode($img['description']),
 					'small_picture'	=> $this->stripBasePath($img['src'][4]),
-					'big_picture'   => $this->stripBasePath($img['src'][5])
+					'big_picture'   => $this->stripBasePath($img['src'][5]),
+					'relations'     => $this->utf8decode($img['relations'])
 				);
 			}
 		}

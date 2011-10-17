@@ -663,27 +663,28 @@ App.views.Shop.pictures = Ext.extend(Ext.Carousel,
 		}
 	},
 	initComponent: function() {
-		var me = this, items = [], data = App.stores.Picture.data.items;
+		var me = this, items = [], data = App.stores.Picture.data.items, count = 0,
+			ordernumber = document.getElementById('ordernumberDetail').innerHTML;
 
 		// Get Images
 		Ext.each(data, function(item, idx) {
-			var htmlContent = '<div class="tapImage"><img width="'+lastpinch+'%" src="'+item.get('big_picture')+'"/></div>';
-			if(!Ext.isEmpty(item.get('desc'))) {
-				htmlContent += '<div class="description">'+item.get('desc')+'</div>';
-			}
-			items[idx] = new Ext.Panel({
-				html: htmlContent,
-				cls: 'slide_image',
-				scroll: false,
-				listeners: {
-					scope: this,
-					el: {
-						delegate: '.tapImage',
-						pinch: me.onPinch,
-						doubletap: me.onDblTap
+			var html = me.filterPicture(item, ordernumber);
+
+			if(Ext.isString(html)) {
+				items[count] = new Ext.Panel({
+					html: html,
+					cls: 'slide_image',
+					scroll: false,
+					listeners: {
+						scope: this,
+						el: {
+							delegate: '.tapImage',
+							doubletap: me.onDblTap
+						}
 					}
-				}
-			});
+				});
+				count++;
+			}
 		});
 
 		Ext.apply(me, {
@@ -693,30 +694,6 @@ App.views.Shop.pictures = Ext.extend(Ext.Carousel,
 
 		App.views.Shop.pictures.superclass.initComponent.call(this);
 	},
-
-	/**
-	 * Resize the current picture through a pinch gesture
-	 *
-	 * @param obj
-	 */
-	onPinch: function(obj) {
-		var element = this.query('img');
-		Ext.each(element, function(el) {
-
-			// Calculate zoom value based on deltaScale
-			lastpinch = lastpinch + (obj.deltaScale * 10);
-			if(lastpinch >= 75) {
-				if(lastpinch <= 120) {
-					el.setAttribute('width', lastpinch + '%');
-				} else {
-					lastpinch = 120;
-				}
-			} else {
-				lastpinch = 75;
-			}
-		});
-	},
-
 	/**
 	 * Resize the current picture to a specific value
 	 */
@@ -729,6 +706,23 @@ App.views.Shop.pictures = Ext.extend(Ext.Carousel,
 			lastpinch = 75;
 			el.setAttribute('width', lastpinch + '%');
 		});
+	},
+
+	{literal}
+	filterPicture: function(item, ordernumber) {
+		var html = '';
+
+		if(!Ext.isEmpty(item.get('relations')) && item.get('relations') != ordernumber) {
+			return false;
+		}
+
+		html = '<div class="tapImage"><img width="'+lastpinch+'%" src="'+item.get('big_picture')+'"/></div>';
+		if(!Ext.isEmpty(item.get('desc'))) {
+			html += '<div class="description">'+item.get('desc')+'</div>';
+		}
+
+		return html;
 	}
+	{/literal}
 });
 </script>

@@ -15,7 +15,7 @@ App.views.Shop.detailTpl = new Ext.XTemplate(
 
 		// Image
 		'<tpl if="image_url">',
-			'<div class="image" style="background-image: url({image_url})">&nbsp;</div>',
+			'<div id="thumb-image" class="image" style="background-image: url({image_url})">&nbsp;</div>',
 		'</tpl>',
 
 		// Article Informations

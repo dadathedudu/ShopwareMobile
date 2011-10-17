@@ -155,7 +155,8 @@ App.models.Pictures = Ext.regModel('Picture', {
 	fields: [
 		{ name: 'small_picture', type: 'string' },
         { name: 'big_picture', type: 'string' },
-		{ name: 'desc', type: 'string' }
+		{ name: 'desc', type: 'string' },
+		{ name: 'relations', type: 'string' }
 	],
 	proxy: {
 		type: 'ajax',

@@ -110,7 +110,8 @@ Ext.regController('detail', {
 
         App.stores.Picture.load({
             params: {
-                articleId: me.lastRecord.data.articleID
+                articleId: me.lastRecord.data.articleID,
+				ordernumber: me.lastRecord.data.ordernumber
             },
             callback: function() {
                 if(!view) {
@@ -231,6 +232,26 @@ Ext.regController('detail', {
 				me.spinner.setValue(1);
 			}
 		}
+
+		/** Get the first image which matches our condition */
+		var activeImage = null;
+		for(var idx in item.images) {
+			var image = item.images[idx];
+
+			if(options.value == item.ordernumber) {
+				activeImage = item.image_url;
+				break;
+			}
+
+			if(options.value == image.relations) {
+				activeImage = image.src[3];
+				break;
+			}
+		}
+		/** Set the new thumbnail image */
+		var image = document.getElementById('thumb-image');
+		image.style.backgroundImage = 'url("' + activeImage + '")';
+
 		return true;
 	},
 
