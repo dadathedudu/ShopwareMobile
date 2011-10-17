@@ -320,6 +320,7 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 				'userAgents' => $config['supportedDevices'],
 				'basePath'   => $request->getBasePath(),
 				'active'     => $session['firstVisit'],
+				'version'    => $version,
 				'pluginOpts' => $pluginOpts
 		));
 

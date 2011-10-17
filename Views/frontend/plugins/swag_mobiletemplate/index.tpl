@@ -27,7 +27,7 @@
 addEventListener("load", function() { setTimeout(function() { window.scrollTo(0, 1) }, 0) }, false);
 </script>
 {/literal}
-{if $shopwareMobile.pluginOpts->showNotice}
+{if $shopwareMobile.pluginOpts->showNotice && $shopwareMobile.version == 'mobile'}
 	<style type="text/css">
 	html { padding: 0 }
 	.visit-mobile {
