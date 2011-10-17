@@ -3,6 +3,7 @@
 - **Required shopware version**: >= 3.5.4
 - **Current stable tag**: 1.2.4
 - **Used framework**: Sencha Touch v1.1.1
+- **Tested devices**: iPhone 4, iPhone 3GS
 
 ### Supported devices:
 
