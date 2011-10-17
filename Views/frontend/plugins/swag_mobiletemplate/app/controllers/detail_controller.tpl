@@ -294,6 +294,9 @@ Ext.regController('detail', {
 		if(me._item.data.mode == '1') {
 			me.buyBtn.hide();
 			me.formPnl.hide();
+
+			me.doLayout();
+
 		}
 
 		/** Setup article amount spinner */

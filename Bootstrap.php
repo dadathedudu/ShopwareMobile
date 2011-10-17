@@ -253,7 +253,9 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 			if($config['useAsSubshop'] === 1) {
 				if(Shopware()->System()->sLanguage == $config['subshopID'] && $version == 'mobile') {
 					$session['useMobile'] = true;
-					// TODO - Redirect to the base path
+
+					self::redirectToBasePath($request, $response);
+
 				} else {
 					$session['useMobile'] = false;
 				}
@@ -261,7 +263,7 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 			} else {
 				if($useMobile && $version == 'mobile') {
 					$session['useMobile'] = true;
-					// TODO - Redirect to the base path
+
 				} else {
 					$session['useMobile'] = false;
 				}
@@ -579,4 +581,25 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 
 		return $device;
     }
+
+	/**
+	 * Helper method which redirects the user to the start view
+	 * of the mobile template.
+	 *
+	 * This fixes the broken images due to the fact that the images
+	 * are set relative to the location.
+	 *
+	 * @access private
+	 * @param $request - Request object of the event listener
+	 * @param $response - Response object of the event listener
+	 * @return string - URL
+	 */
+	private function redirectToBasePath($request, $response) {
+		$url = $request->getScheme().'://'.$request->getHttpHost();
+		$url .= $request->getBaseUrl().'/';
+
+		$response->setRedirect($url);
+
+		return $url;
+	}
 }

@@ -34,7 +34,9 @@ addEventListener("load", function() { setTimeout(function() { window.scrollTo(0,
 		background: -webkit-gradient(linear, left top, left bottom, from({$shopwareMobile.pluginOpts->startColor}), to({$shopwareMobile.pluginOpts->endColor}));
 		padding: 20px;
 		width: 100%;
+		display: none;
 	}
+	.ctl_index .visit-mobile { display: block }
 	.visit-mobile .text,
 	.visit-mobile a {
 		color: {$shopwareMobile.pluginOpts->textColor};

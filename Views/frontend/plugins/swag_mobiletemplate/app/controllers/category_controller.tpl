@@ -77,7 +77,6 @@ Ext.regController('category', {
 		var store, type, direction, list = Ext.getCmp('subListing');
 
 		if(!options.store) {
-			console.warn('options.store not defined, use default store');
 			store = App.stores.CategoriesTree;
 		} else {
 			store = options.store;
@@ -119,7 +118,6 @@ Ext.regController('category', {
 	showArticleListing: function(options) {
 		var store, list = Ext.getCmp('artListing'), type, direction;
 		if(!options.store) {
-			console.warn('options.store not defined, use default store');
 			store = App.stores.Listing;
 		} else {
 			store = options.store;

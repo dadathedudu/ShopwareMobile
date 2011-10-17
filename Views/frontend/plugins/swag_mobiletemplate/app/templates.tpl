@@ -116,7 +116,11 @@ App.views.Shop.blogTpl = new Ext.XTemplate(
 			'</tpl>',
 			'<div class="info">',
 				'<strong class="name">{articleName}</strong>',
-				'<span class="supplier"><strong>Autor:</strong> {supplierName}</span>',
+				'<span class="publish"><strong>Ver&ouml;ffentlicht am:</strong> {datumFormated}</span>',
+				'<span class="supplier"><strong>Erstellt von:</strong> {supplierName}</span>',
+				'<tpl if="keywords">',
+					'<span class="keywords"><strong>Tags:</strong> {keywords}</span>',
+				'</tpl>',
 			'</div>',
 		'</div>',
 	'</tpl>', { compiled: true }

@@ -101,6 +101,8 @@ App.models.Articles = Ext.regModel('Articles', {
 /** Model for the article details */
 App.models.Detail = Ext.regModel('Detail', {
 	fields: [
+		{ name: 'datumFormated', type: 'string' },
+		{ name: 'keywords', type: 'string' },
 		{ name: 'articleID', type: 'int' },
 		{ name: 'categoryID', type: 'int' },
 		{ name: 'ordernumber', type: 'string' },

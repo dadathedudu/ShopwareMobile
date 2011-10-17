@@ -195,7 +195,7 @@ App.views.Shop.info = Ext.extend(Ext.Panel,
 			scroll: false,
 			autoWidth: true,
 			autoHeight: true,
-			style: 'max-height: 250px; width: 100%',
+			style: 'width: 100%',
 			itemSelector: '.image',
 			listeners: {
 				scope: this,
