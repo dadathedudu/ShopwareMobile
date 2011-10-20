@@ -40,7 +40,7 @@ Shopware Mobile is a mobile optimized template based on Sencha Touch 1.1 for the
 uses the well known plugin structure of shopware in what way the installation and customizing is as easy as possible for
 the shop owner.
 
-More informations about Shopware Mobile could be found on [shopware.de](http://www.shopware.de/die-shopsoftware/Shopware-Mobile/, "Shopware Mobile on shopware.de")
+More informations about Shopware Mobile could be found on [shopware.de](http://www.shopware.de/die-shopsoftware/Shopware-Mobile/)
 
 **Want to jump right into it?**
 
