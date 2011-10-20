@@ -449,6 +449,7 @@ Ext.ns('Shopware.SwagMobileTemplate');
 					name: 'msg',
 					fieldLabel: 'Anfrage-Text',
 					emptyText: 'Ihre Anfrage folgt hier',
+
 					required: true,
 					allowBlank: false,
 					height: 225
