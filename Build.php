@@ -123,6 +123,17 @@ return array(
 		)),
 		'1.2.4'=>array('releasedate'=>'2011-07-21', 'lines' => array(
 			'Hide empty and blog categories in sub category listing'
+		)),
+		'1.2.5'=>array('releasedate'=>'2011-10-20', 'lines' => array(
+			'Add support for external payment providers',
+			'Refactor the underlying MVC structure',
+			'Add an seperate backend module',
+			'Native applications based on PhoneGap could be requested now',
+			'Add three new color schemes',
+			'Support for picture relations (variant articles and configurator articles)',
+			'Improve the usability and the user interface',
+			'Improved customizing options for third party developers',
+			'Serveral bug fixes. Thanks goes out to our active community members'
 		))
 	)
 );

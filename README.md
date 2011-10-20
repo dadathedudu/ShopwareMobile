@@ -74,7 +74,7 @@ An alternative way to create a install package is to use our "create-install-pac
 	$ chmod a=r+x create-install-package.sh
 	$ ./create-install-package.sh
     
-# Hacking
+# Get Involved
 
 Every developer is welcome to contribute the development of Shopware Mobile. Just start up your terminal, clone the repository using `$ git clone git://github.com/ShopwareAG/ShopwareMobile.git` and start developing.
 If you're done, just send us a pull request. We'll verify the pull request and merge it with the master repository.
