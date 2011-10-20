@@ -142,7 +142,7 @@ Ext.regController('checkout', {
 			/** If payment based on a iframe */
 			this.selectedMethod = method;
 
-			if(this.selectedMethod.embediframe) {
+			if(this.selectedMethod && this.selectedMethod.embediframe) {
 				var url = this.selectedMethod.embediframe;
 				this.view.submitOrderBtn.setText('Zahlung durchführen').setHandler(function() {
 

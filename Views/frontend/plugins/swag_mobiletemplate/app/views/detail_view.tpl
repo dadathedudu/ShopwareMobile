@@ -271,6 +271,7 @@ App.views.Shop.info = Ext.extend(Ext.Panel,
 
 		me.desc = new Ext.DataView({
 			store: store,
+			style: 'width: 100%',
 			tpl: Ext.XTemplate.from('Shopdesctpl'),
 			scroll: false,
 			autoWidth: true,
