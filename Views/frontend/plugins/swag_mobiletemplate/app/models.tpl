@@ -160,10 +160,15 @@ App.models.Pictures = Ext.regModel('Picture', {
 	],
 	proxy: {
 		type: 'ajax',
+		method: 'POST',
 		url: App.RequestURL.getPictures,
 		reader: {
 			type: 'json',
 			root: 'images'
+		},
+		actionMethods: {
+			read: 'POST',
+			load: 'POST'
 		}
 	}
 });

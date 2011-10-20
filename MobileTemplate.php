@@ -391,7 +391,7 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 		}
 		
 		$article = Shopware()->Modules()->Articles()->sGetArticleById($id);
-		
+		$article = Shopware()->Modules()->Articles()->sGetConfiguratorImage($article);
 						
 		$article['mode'] = (int) $article['mode'];
 		if($article['mode'] !== 1) {
@@ -558,8 +558,23 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 	 */
 	public function getArticleImagesAction()
 	{
+
+		/** Replace configurator groups due to a bug in safari mobile
+		 *  which fires the following JS error:
+		 *  Invalid ComponentQuery selector: "]" */
+		if(isset($_POST) && !empty($_POST)) {
+			foreach($this->system->_POST as $key => $value) {
+				preg_match('/group.([0-9]+)/i', $key, $matches);
+				if(!empty($matches)) {
+					$this->system->_POST['group'][$matches[1]] = $value;
+					unset($this->system->_POST[$key]);
+				}
+			}
+		}
+
 		$id = (int) $this->Request()->getParam('articleId');
 		$article = Shopware()->Modules()->Articles()->sGetArticleById($id);
+		$article = Shopware()->Modules()->Articles()->sGetConfiguratorImage($article);
 		$images = array();
 		
 		// Main image

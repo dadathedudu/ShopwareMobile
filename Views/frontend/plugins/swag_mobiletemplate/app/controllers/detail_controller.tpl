@@ -106,13 +106,23 @@ Ext.regController('detail', {
     showPictures: function() {
         var view = Ext.getCmp('pictures'), me = this;
 
-		this.lastRecord = this.store.getAt(0);
+		me.lastRecord = this.store.getAt(0);
+
+		var requestParams = {
+			articleId: me.lastRecord.data.articleID,
+			ordernumber: document.getElementById('ordernumberDetail').innerHTML
+		};
+
+		if(!Ext.isEmpty(me.lastRecord.data.sConfigurator)) {
+			var detailView = Ext.getCmp('teaser');
+
+			console.log(detailView.formPnl.getValues());
+
+			requestParams = Ext.apply(requestParams, detailView.formPnl.getValues());
+		}
 
         App.stores.Picture.load({
-            params: {
-                articleId: me.lastRecord.data.articleID,
-				ordernumber: me.lastRecord.data.ordernumber
-            },
+            params: requestParams,
             callback: function() {
                 if(!view) {
                     view = new App.views.Shop.pictures;
@@ -187,6 +197,7 @@ Ext.regController('detail', {
 			if(!Ext.isEmpty(response.sArticle)) {
 
 				var article = response.sArticle[0];
+
 				/** Update ordnumber */
 				me.hiddenOrdernumber.setValue(article.ordernumber);
 				document.getElementById('ordernumberDetail').innerHTML = article.ordernumber;
@@ -194,6 +205,10 @@ Ext.regController('detail', {
 				/** Update price */
 				document.getElementById('priceDetail').innerHTML = article.price;
 				document.getElementById('priceNumericDetail').setAttribute('value', article.priceNumeric);
+
+				/** Set the new thumbnail image */
+				var image = document.getElementById('thumb-image');
+				image.style.backgroundImage = 'url("' + article.image_url + '")';
 
 				me.spinner.setValue(1);
 				me.setLoading(false);
