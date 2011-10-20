@@ -105,7 +105,7 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		Shopware()->Db()->query('DROP TABLE IF EXISTS  `s_plugin_mobile_settings`;');
 		
 		// Delete menu entry
-		Shopware()->Db()->query(" DELETE IGNORE FROM `s_core_menu` WHERE `name` = 'Shopware Mobile'");
+		Shopware()->Db()->query("DELETE IGNORE FROM `s_core_menu` WHERE `name` = 'Shopware Mobile'");
 
 		/* Delete the mail template */
 		Shopware()->Db()->query("DELETE IGNORE FROM `s_core_config_mails` WHERE `name` = 'sMobileNativeApplicationRequest'");

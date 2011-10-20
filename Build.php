@@ -134,6 +134,9 @@ return array(
 			'Improve the usability and the user interface',
 			'Improved customizing options for third party developers',
 			'Serveral bug fixes. Thanks goes out to our active community members'
+		)),
+		'1.2.6'=>array('releasedate'=>'2011-10-20', 'lines'=> array(
+			'Remove beta notice from the backend module'
 		))
 	)
 );

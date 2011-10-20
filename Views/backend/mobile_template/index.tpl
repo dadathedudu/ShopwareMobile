@@ -514,17 +514,7 @@ Ext.ns('Shopware.SwagMobileTemplate');
 				items: [this.generellPnl, this.designPnl, this.nativePnl]
 			});
 			
-			/** Beta notice panel */
-			this.betaNoticePnl = new Ext.Panel({
-				plain: true,
-				padding: 10,
-				bodyBorder: false,
-				cls: 'swag_notice',
-				region: 'north',
-				html: '<div class="error pnl"><strong>Hinweis:</strong> Dieses Plugin befindet sich zur Zeit im Beta-Status und ist daher nicht für den produktiven Einsatz geeignet.</div>'
-			});
-			
-			this.items = [this.betaNoticePnl, this.tabPnl];
+			this.items = [this.tabPnl];
 			
 	    	View.superclass.initComponent.call(this);
 	    }
