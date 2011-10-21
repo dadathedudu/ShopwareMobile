@@ -137,6 +137,9 @@ return array(
 		)),
 		'1.2.6'=>array('releasedate'=>'2011-10-20', 'lines'=> array(
 			'Remove beta notice from the backend module'
+		)),
+		'1.2.7'=>array('releasedate'=>'2011-10-21', 'lines' => array(
+			'Fix browser condition which prevents the user to change to the normal view'
 		))
 	)
 );

@@ -246,10 +246,6 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		}
 		$config = $properties;
 
-		if($request->getParam('sMobile') !== null) {
-			$session['useMobile'] = (bool) $request->getPost('sMobile') ;
-		}
-
 		if(!isset($session['useMobile'])) {
 			$firstVisit = true;
 		} else {
@@ -258,45 +254,19 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 
 		// Check the device of the user
 		$version = self::checkForMobileDevice($config['supportedDevices']);
-		if(!isset($session['useMobile'])) {
-			if(Shopware()->System()->sLanguage == $config['subshopID']) {
+
+		if(!isset($session['useMobile']) && $version == 'mobile') {
+			$config['useAsSubshop'] = (bool) $config['useAsSubshop'];
+			if(Shopware()->System()->sLanguage == $config['subshopID'] && $config['useAsSubshop']) {
 				$session['useMobile'] = true;
 			} else {
 				$session['useMobile'] = $version == 'mobile';
 			}
 		}
 
-
-		/* if(!$session['useMobile']) {
-
-			if($config['useAsSubshop'] === 1) {
-				if(Shopware()->System()->sLanguage == $config['subshopID'] && $version == 'mobile') {
-					$session['useMobile'] = true;
-
-					self::redirectToBasePath($request, $response);
-
-				} else {
-					$session['useMobile'] = false;
-				}
-
-			} else {
-				if($useMobile && $version == 'mobile') {
-					$session['useMobile'] = true;
-
-				} else {
-					$session['useMobile'] = false;
-				}
-			}
-		} */ 
-
-		/** Redirect to the normal view */
-		/* if(!$useMobile) { $session['useMobile'] = false; }
-
-		if(!isset($session['firstVisit'])) {
-			$session['firstVisit'] = true;
-		} else {
-			$session['firstVisit'] = false;
-		} */
+		if($request->getParam('sMobile') !== null) {
+			$session['useMobile'] = (bool) $request->getPost('sMobile') ;
+		}
 
 		if($session['useMobile'] === true && !$firstVisit) {
 
