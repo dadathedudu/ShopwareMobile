@@ -89,7 +89,7 @@ Ext.ux.touch.PagingToolbar = Ext.extend(Ext.Toolbar, {
 		this.prevBtn.on("tap", this.handlePrevPage, this);
 		this.nextBtn.on("tap", this.handleNextPage, this);
 
-		this.selectField = new Ext.form.Select(this.createSelectField());
+		this.selectField = new Ext.form.localeSelect(this.createSelectField());
 
 		return {
 			items: [
