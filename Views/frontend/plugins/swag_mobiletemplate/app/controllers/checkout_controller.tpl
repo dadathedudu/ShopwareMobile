@@ -282,18 +282,19 @@ Ext.regController('checkout', {
 	 * @param options
 	 */
 	processOrder: function(options) {
-		if(!options.success) {
-			Ext.Msg.alert('{s name="MobileCheckoutOrderFailedTitle"}Bestellung fehlgeschlagen{/s}', response.msg);
+
+		if(!options.response.success) {
+			Ext.Msg.alert('{s name="MobileCheckoutOrderFailedTitle"}Bestellung fehlgeschlagen{/s}', options.response.msg);
 			return false
 		}
-		Ext.Msg.alert('Bestellung erfolgreich', response.msg, function() {
+		Ext.Msg.alert('Bestellung erfolgreich', options.response.msg, function() {
 			var owner = options.owner;
 
 			/* Clear cart store */
 			App.stores.Cart.removeAll();
 
 			/* Destroy Order confirmation */
-			me.destroy();
+			Ext.getCmp('orderConfirmation').destroy();
 
 			/* Create new cart list on owner */
 			owner.pnl.update('');
