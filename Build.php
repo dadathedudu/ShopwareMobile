@@ -140,6 +140,16 @@ return array(
 		)),
 		'1.2.7'=>array('releasedate'=>'2011-10-21', 'lines' => array(
 			'Fix browser condition which prevents the user to change to the normal view'
+		)),
+		'1.2.8'=>array('releasedate'=>'2011-10-27', 'lines'=> array(
+			'Fix a critical bug in the checkout process which prevents the user to accomplish the order',
+			'Fix the backend logout if the plugin is active',
+			'Fix the newsletter preview if the plugin is active',
+			'The payment method paypal express couln\'t be saved in the backend module',
+			'Get the country selection from the base configuration of the store',
+	 		'Shrink the install package size under 2 megabyte',
+	 		'Localization of the category paging select box',
+	 		'Fix checkout page after a new registration'
 		))
 	)
 );
