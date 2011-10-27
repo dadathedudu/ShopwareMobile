@@ -297,11 +297,12 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 		if(isset($useAsSubshop)) {
 			if($useAsSubshop == 'on') {
 				$useAsSubshop = 1;
-			} else {
-				$useAsSubshop = 0;
 			}
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$useAsSubshop' WHERE `name` LIKE 'useAsSubshop';");
+		} else {
+			$useAsSubshop = 0;
 		}
+		$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$useAsSubshop' WHERE `name` LIKE 'useAsSubshop';");
+
 
 		//Subshop-ID
 		$subshopID = $request->getParam('hiddenSubshopID');

@@ -1,8 +1,8 @@
 {block name="frontend_index_no_script_message" prepend}
 {if $shopwareMobile.active}
 	<script type="text/javascript">
-		var useSubShop = {$shopwareMobile.useSubShop},
-			subShopID  = {$shopwareMobile.subShopId};
+		var useSubShop = '{$shopwareMobile.useSubShop}',
+			subShopID  = '{$shopwareMobile.subShopId}';
 
 
 	if(navigator.userAgent.match(/{$shopwareMobile.userAgents}/i)) {
