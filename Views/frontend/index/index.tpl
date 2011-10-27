@@ -62,7 +62,7 @@
 </head>
 <body>
 
-    <script type="text/javascript" src="{link file='frontend/_resources/app/_sencha/sencha-touch-debug.js' fullPath}"></script>
+    <script type="text/javascript" src="{link file='frontend/_resources/app/_sencha/sencha-touch.js' fullPath}"></script>
     <script type="text/javascript" src="{link file='frontend/_resources/app/_sencha/Ext.ux.touch.PagingToolbar.js' fullPath}"></script>
 
 	<div id="templates">
