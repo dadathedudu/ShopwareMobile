@@ -374,31 +374,42 @@ App.views.Shop.info = Ext.extend(Ext.Panel,
 	 */
 	buildConfigurator: function(rec) {
 		var me = this, groupIdx = 1, configurator = rec.data.sConfigurator, options = [];
+
+
 		Ext.each(configurator, function(group) {
+
+			var selected;
 
 			/* Collection options */
 			for(var idx in group.values) {
 				var item =  group.values[idx];
+				idx = ~~idx;
 
+				if(group.selected_value == idx) {
+					selected = item.optionname
+				}
+			
 				options.push({
 					text: item.optionname,
 					value: item.optionID
 				});
 			}
 
+			var selectBox = new Ext.form.localeSelect({
+				options: options,
+				name: 'group-'+groupIdx,
+				listeners: {
+					scope: me,
+					change: me.onConfiguratorChange
+				}
+			});
+			selectBox.setValue(selected);
+
 			var fieldset = new Ext.form.FieldSet({
 				cls: 'configuratorFieldset',
 				title: group.groupname,
 				instructions: group.groupdescription,
-				items: [{
-					xtype: 'localeSelectfield',
-					options: options,
-					name: 'group-'+groupIdx,
-					listeners: {
-						scope: me,
-						change: me.onConfiguratorChange
-					}
-				}]
+				items: [ selectBox ]
 			});
 			me.formPnl.add(fieldset);
 			groupIdx++;
