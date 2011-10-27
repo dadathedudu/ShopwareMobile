@@ -558,7 +558,6 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 	 */
 	public function getArticleImagesAction()
 	{
-
 		/** Replace configurator groups due to a bug in safari mobile
 		 *  which fires the following JS error:
 		 *  Invalid ComponentQuery selector: "]" */
@@ -947,6 +946,28 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 			'msg'     => 'Ihr Logout war erfolgreich.'
 		);
 
+		$this->jsonOutput($output);
+	}
+
+	/**
+	 * Retunrs an json string of all available countries
+	 *
+	 * @return void
+	 */
+	public function getCountryStoreAction() {
+
+		$countryList = Shopware()->Modules()->Admin()->sGetCountryList();
+		$countryList = array_values($countryList);
+
+		foreach($countryList as &$country) {
+			$country['countryname'] = $this->utf8encode($country['countryname']);
+		}
+
+		$output = array(
+			'success' => !empty($countryList),
+			'countries' => $countryList,
+			'total' => count($countryList)
+		);
 		$this->jsonOutput($output);
 	}
 	

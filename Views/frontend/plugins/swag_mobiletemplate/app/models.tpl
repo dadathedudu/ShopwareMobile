@@ -35,6 +35,21 @@ App.models.Promotions = Ext.regModel('Promotion', {
 	}
 });
 
+App.models.CountryList = Ext.regModel('CountryList', {
+	fields: [
+		{ name: 'countryname', type: 'string' },
+		{ name: 'id', type: 'int' }
+	],
+	proxy: {
+		type: 'ajax',
+		url: App.RequestURL.getCountries,
+		reader: {
+			type: 'json',
+			root: 'countries'
+		}
+	}
+});
+
 /** Model for the main categories - only used on the home view */
 App.models.MainCategories = Ext.regModel('MainCategories', {
 	fields: [

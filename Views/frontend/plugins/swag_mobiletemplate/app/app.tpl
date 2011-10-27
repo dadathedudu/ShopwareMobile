@@ -170,7 +170,8 @@ App.RequestURL = {
 	confirm:       App.basePath + '/checkout/confirm',
 	changePayment: App.basePath + '/account/savePayment',
 	customSite:    App.basePath + '/custom/',
-	getTree: 	   App.basePath + '/MobileTemplate/getCategoriesTree'
+	getTree: 	   App.basePath + '/MobileTemplate/getCategoriesTree',
+	getCountries:  App.basePath + '/MobileTemplate/getCountryStore'
 };
 {/literal}
 </script>

@@ -555,13 +555,13 @@ App.views.Account.register = Ext.extend(Ext.form.FormPanel,
 					required: true
 				},
 				{
-					xtype: 'selectfield',
+					xtype: 'localeSelectfield',
 					label: '{s name="MobileRegisterShippingLand"}Land{/s}',
 					required: true,
 					name: 'register[billing][country]',
-					options: [
-						{ text: 'Deutschland', value: '2' }
-					]
+					store: App.stores.CountryList,
+					valueField: 'id',
+					displayField: 'countryname'
 				}
 			]
 		},

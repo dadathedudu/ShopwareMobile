@@ -50,6 +50,11 @@ App.stores.Picture = new Ext.data.Store({
 	model: 'Picture'
 });
 
+App.stores.CountryList =  new Ext.data.Store({
+	model: 'CountryList',
+	autoLoad: true
+})
+
 /** Store for the search function */
 App.stores.Search = new Ext.data.Store({
 	model: 'Search',
