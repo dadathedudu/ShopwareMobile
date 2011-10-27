@@ -231,12 +231,11 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 		$view = $args->getSubject()->View();
 		$pluginOpts = Shopware()->Plugins()->Frontend()->SwagMobileTemplate()->Config();
 
-		//$useMobile = ($_POST['sMobile'] == 1 ? true : false);
-		$session = &Shopware()->Session()->Mobile;
 
 		if(!$request->isDispatched() || $response->isException() || $request->getModuleName() !== 'frontend') {
 			return;
 		}
+		$session = &Shopware()->Session()->Mobile;
 
 		// Get plugin settings from our own db table
 		$config = Shopware()->Db()->fetchAll('SELECT * FROM `s_plugin_mobile_settings`');
@@ -344,6 +343,13 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 	public static function onPostDispatchBackend(Enlight_Event_EventArgs $args)
 	{
 		$view = $args->getSubject()->View();
+		$request = $args->getSubject()->Request();
+		$response = $args->getSubject()->Response();
+
+		if(!$request->isDispatched() || $response->isException() || $request->getModuleName() !== 'backend') {
+			return;
+		}
+
 		$view->extendsBlock('backend_index_css', '<style type="text/css">a.iphone { background-image: url("'. self::$icnBase64 .'"); background-repeat: no-repeat; }</style>', 'append');
 
 		return;
