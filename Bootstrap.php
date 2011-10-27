@@ -303,7 +303,11 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 
 		// Render the normal version and show a hint to use shopware mobile
 		$view->addTemplateDir(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'Views' . DIRECTORY_SEPARATOR);
-			
+
+			if(empty($config['useAsSubshop'])) {
+				$config['useAsSubshop'] = 0;
+			}
+
 			$view->assign('shopwareMobile', array(
 				'useSubShop' => $config['useAsSubshop'],
 				'subShopId'  => $config['subshopID'],
