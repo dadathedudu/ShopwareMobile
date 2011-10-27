@@ -46,6 +46,7 @@ App.views.Search.index = Ext.extend(Ext.Panel,
 					width: '78%',
 					autoComplete: false,
 					placeHolder: '{s name="MobileSearchFieldPlaceholder"}Ihr Suchbegriff{/s}',
+					useClearIcon: true,
 					listeners: {
 						scope: this,
 						keyup: this.onKeyUp
