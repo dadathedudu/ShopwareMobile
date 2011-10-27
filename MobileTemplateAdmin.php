@@ -187,6 +187,8 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 				);
 			}
 		}
+
+		
 		$this->View()->assign('supportedPaymentmeansJSON', Zend_Json::encode($payments));
 	}
  	
@@ -250,6 +252,12 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 		if(!empty($prepayment)) {
 			$supportedPaymentmeans[] = 5;
 		}
+
+		$paypalexpress = $request->getParam('paypalexpress');
+		if(!empty($paypalexpress)) {
+			$supportedPaymentmeans[] = 20;
+		}
+
 		$supportedPaymentmeans = implode('|', $supportedPaymentmeans);
 		$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$supportedPaymentmeans' WHERE `name` LIKE 'supportedPayments';");
 		
