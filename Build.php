@@ -150,6 +150,10 @@ return array(
 	 		'Shrink the install package size under 2 megabyte',
 	 		'Localization of the category paging select box',
 	 		'Fix checkout page after a new registration'
+		)),
+		'1.2.9'=>array('releasedate' => '2011-10-28', 'lines' => array(
+			'Add support for random promotion articles',
+			'Add new checkbox in the backend module which shows/hides the banner on the start page'
 		))
 	)
 );
