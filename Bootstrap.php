@@ -49,6 +49,7 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 			('useAsSubshop', '0'),
 			('subshopID', '1'),
 			('useSenchaIO', '0'),
+			('showBanner', '0'),
 			('useVoucher', '0'),
 			('useNewsletter', '0'),
 			('useComment', '0'),
@@ -295,6 +296,7 @@ class Shopware_Plugins_Frontend_SwagMobileTemplate_Bootstrap extends Shopware_Co
 				'agbID'          => $config['agbInfoID'],
 				'cancellationID' => $config['cancelRightID'],
 				'checkboxGreen'  => $config['checkboxesGreen'],
+				'showBanner'     => $config['showBanner'],
 				'basePath'       => $basepath
 			));
 

@@ -136,7 +136,6 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 			$this->View()->assign('screenshots', $screenshots);
 		}
 		
-		
 		// Supported devices
 		$data = array(
 			array('boxLabel' => 'iPhone', 'name' => 'iphone'),
@@ -286,11 +285,11 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 		if(isset($showNormalVersionLink)) {
 			if($showNormalVersionLink == 'on') {
 				$showNormalVersionLink = 1;
-			} else {
-				$showNormalVersionLink = 0;
 			}
-			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$showNormalVersionLink' WHERE `name` LIKE 'showNormalVersionLink';");
+		} else {
+			$showNormalVersionLink = 0;
 		}
+		$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$showNormalVersionLink' WHERE `name` LIKE 'showNormalVersionLink';");
 
 		// Use Shopware Mobile as Subshop
 		$useAsSubshop = $request->getParam('useAsSubshop');
@@ -394,7 +393,7 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$useSenchaIO' WHERE `name` LIKE 'useSenchaIO';");
 		}
 
-		// Sencha.IO
+		// Checkbox green
 		$checkboxesGreen = $request->getParam('checkboxesGreen');
 		if(isset($checkboxesGreen)) {
 			if($checkboxesGreen == 'on') {
@@ -404,6 +403,17 @@ class Shopware_Controllers_Backend_MobileTemplate extends Enlight_Controller_Act
 			}
 			$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$useSenchaIO' WHERE `name` LIKE 'useSenchaIO';");
 		}
+
+		// Show normal version link
+		$showBanner = $request->getParam('showBanner');
+		if(isset($showBanner)) {
+			if($showBanner == 'on') {
+				$showBanner = 1;
+			}
+		} else {
+			$showBanner = 0;
+		}
+		$this->db->query("UPDATE `s_plugin_mobile_settings` SET `value` = '$showBanner' WHERE `name` LIKE 'showBanner';");
 		
 		// Colortemplate
 		$colorTemplate = $request->getParam('hiddenColorTemplate');

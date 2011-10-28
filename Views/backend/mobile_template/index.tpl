@@ -226,6 +226,13 @@ Ext.ns('Shopware.SwagMobileTemplate');
 						name: 'useSenchaIO',
 						checked: {if $useSenchaIO}true{else}false{/if}
 					}, {
+
+						// Show banners on start page
+						xtype: 'checkbox',
+						fieldLabel: 'Banner auf der Startseite anzeigen',
+						name: 'showBanner',
+						checked: {if $showBanner}true{else}false{/if}
+					}, {
 						// Colortemplate
 			            fieldLabel: 'Farbtemplate',
 			            xtype: 'combo',

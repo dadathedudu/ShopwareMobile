@@ -185,13 +185,16 @@ App.views.Shop.index = Ext.extend(Ext.Panel,
 
 
 		{if $sBanner}
-			this.banner = new Ext.Panel({
-				cls: 'home-banner',
-				html: '<img width="' + window.outerWidth + '" src="{literal}http://src.sencha.io/'+ window.outerWidth +'/{/literal}{$sBanner.img}" alt="{$sBanner.description}" />',
-				width: '100%'
-			});
-			this.pnl.insert(1, this.banner);
-			this.pnl.doLayout();
+			if(showBanner == 1) {
+				this.banner = new Ext.Panel({
+					cls: 'home-banner',
+					html: '<img width="' + window.outerWidth + '" src="{literal}http://src.sencha.io/'+ window.outerWidth +'/{/literal}{$sBanner.img}" alt="{$sBanner.description}" />',
+					width: '100%'
+				});
+				this.pnl.insert(1, this.banner);
+				this.pnl.doLayout();
+				this.pnl.doComponentLayout();
+			}
 		{/if}
 	},
 
