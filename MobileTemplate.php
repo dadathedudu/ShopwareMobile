@@ -214,7 +214,7 @@ class Shopware_Controllers_Frontend_MobileTemplate extends Enlight_Controller_Ac
 		
 		$i = 0;
 		foreach($promotion_articles as $art) {
-			if($art['mode'] === 'fix') {
+			if($art['mode'] === 'fix' || $art['mode'] === 'random') {
 				$retPromo['promotion'][$i] = array(
 					'articleID'   => $art['articleID'],
 					'id'          => $art['articleID'],
