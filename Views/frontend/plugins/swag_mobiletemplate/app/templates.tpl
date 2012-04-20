@@ -18,6 +18,11 @@ App.views.Shop.detailTpl = new Ext.XTemplate(
 			'<div id="thumb-image" class="image" style="background-image: url({image_url})">&nbsp;</div>',
 		'</tpl>',
 
+		// Image-Placeholder
+		'<tpl if="!image_url">',
+			'<div id="thumb-image" class="image"></div>',
+		'</tpl>',
+
 		// Article Informations
 		'<tpl if="Ext.isEmpty(liveshoppingData)">',
 		'<div class="info">',
@@ -95,7 +100,7 @@ App.views.Shop.detailTpl = new Ext.XTemplate(
 	// Memberfunctions
 	isPseudoprice: function(price) {
 		var price = parseFloat(price);
-		if(price > 0) { return true; } else { return false; }
+		if(price > 0) { return true; } elseï¿½{ return false; }
 	},
 
 	getPercent: function(newPrice, oldPrice) {
